@@ -32,6 +32,6 @@ jobs:
             set -euo pipefail
             export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             export SERVICE_NAME="${{ secrets.SERVICE_NAME }}"
-            if [ -z "${DEPLOY_PATH}" ]; then export DEPLOY_PATH="/var/www/melt/melting-app"; fi
+            if [ -z "${DEPLOY_PATH}" ]; then export DEPLOY_PATH="/var/www/melting-app"; fi
             if [ -z "${SERVICE_NAME}" ]; then export SERVICE_NAME="melting-app"; fi
             bash "${DEPLOY_PATH}/scripts/deploy.sh"
