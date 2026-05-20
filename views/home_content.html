@@ -1,20 +1,27 @@
     <section class="hero" id="top">
+        <div class="hero__ambient" aria-hidden="true">
+            <span class="hero__orb hero__orb--1"></span>
+            <span class="hero__orb hero__orb--2"></span>
+            <span class="hero__orb hero__orb--3"></span>
+            <span class="hero__grid"></span>
+        </div>
         <div class="hero__inner">
             <div class="hero__content">
-                <p class="hero__badge">
+                <p class="hero__badge hero__reveal" style="--reveal-i: 0">
                     <span class="hero__badge-dot" aria-hidden="true"></span>
                     All-in-one for your business
                 </p>
-                <h1>Grow your business with <em>clarity and control</em></h1>
-                <p class="hero__lead">
+                <h1 class="hero__reveal" style="--reveal-i: 1">Grow your business with <em>clarity and control</em></h1>
+                <p class="hero__lead hero__reveal" style="--reveal-i: 2">
                     Zeebroo brings sales, stock, money, people, and marketing into one calm workspace — so you spend less time switching apps and more time serving customers and scaling up.
                 </p>
-                <div class="hero__cta">
+                <div class="hero__cta hero__reveal" style="--reveal-i: 3">
                     <a class="btn btn-primary" href="#contact">Request a demo</a>
                     <a class="btn btn-secondary" href="#solutions">See what’s included</a>
                 </div>
             </div>
-            <div class="hero__media">
+            <div class="hero__media hero__reveal" style="--reveal-i: 4">
+                <div class="hero__video-glow" aria-hidden="true"></div>
                 <div class="hero__video-wrap is-loading" id="heroVideoWrap">
                     <div class="hero__video-loader" id="heroVideoLoader" role="status" aria-live="polite" aria-busy="true">
                         <div class="hero__video-spinner" aria-hidden="true"></div>
