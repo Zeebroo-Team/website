@@ -24,3 +24,7 @@ Open **http://localhost:8788**
 - `controllers/` — Home and 404 handlers
 - `views/home.html` — Full landing page
 - `public/images/` — Logo, hero poster, and demo video (served at `/images/…`)
+
+## Deploy (Ubuntu + Nginx + systemd)
+
+Auto-deploy on push to `main` via GitHub Actions. See **[docs/DEPLOY.md](docs/DEPLOY.md)** for server setup, SSH keys, and GitHub secrets.
