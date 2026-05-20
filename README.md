@@ -1,6 +1,6 @@
 # Zeebroo Website
 
-A simple marketing-style site built with the Melt HTTP server and MVC-style structure.
+Marketing landing page built with the Melt HTTP server.
 
 ## Run
 
@@ -14,15 +14,13 @@ Open **http://localhost:8788**
 
 ## Pages
 
-- `/` — Home
-- `/about` — About
-- `/contact` — Contact form (POST shows a thank-you message)
+- `/` — Home (single-page marketing site)
 
 ## Structure
 
 - `main.melt` — HTTP handler entry
 - `config/app.melt` — Site name and port
 - `routes.melt` — URL routing + static files (`public/css`, `public/js`, `public/images`)
-- `controllers/` — Page logic
-- `views/` — HTML templates (`{{ var }}`, `{!! raw !!}`)
-- `public/css/style.css` — Stylesheet
+- `controllers/` — Home and 404 handlers
+- `views/home.html` — Full landing page
+- `public/images/` — Logo, hero poster, and demo video (served at `/images/…`)

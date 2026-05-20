@@ -1,4 +1,4 @@
-// Zeebroo — simple website built with Melt.
+// Zeebroo — marketing site built with Melt.
 // Run from project root: ./build/melt zeebroo-website/main.melt
 // Open http://localhost:8788
 
@@ -16,5 +16,4 @@ class App {
 
 setHandler("App");
 print "Zeebroo website: http://localhost:" + app.port;
-print "  /  Home   /about   /contact";
 listen(app.port);

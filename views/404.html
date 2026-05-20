@@ -1,5 +1,21 @@
-<section class="page">
-  <h1>404</h1>
-  <p>Page not found: <code>{{ path }}</code></p>
-  <p><a href="/">Go home</a></p>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found — Zeebroo</title>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" href="/images/logo.png" type="image/png">
+</head>
+<body>
+    <main class="section section--cream" style="min-height: 100vh; display: flex; align-items: center;">
+        <div class="container" style="text-align: center;">
+            <h1>404</h1>
+            <p class="section__intro">Page not found: <code>{{ path }}</code></p>
+            <div class="hero__cta" style="justify-content: center;">
+                <a class="btn btn-primary" href="/">Back to home</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
