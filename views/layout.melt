@@ -9,8 +9,40 @@ class View {
         this.output = "";
     }
 
+    method wrapPage(title, metaDescription, body, activeNav, extraScripts) {
+        let layoutData = ViewData();
+        layoutData.title = title;
+        layoutData.metaDescription = metaDescription;
+        layoutData.content = body;
+        layoutData.navAbout = "";
+        layoutData.extraScripts = extraScripts;
+        if (activeNav == "about") {
+            layoutData.navAbout = "is-active";
+        }
+        this.output = renderView("views/layout.html", layoutData);
+    }
+
     method renderHome() {
-        this.output = renderView("views/home.html", ViewData());
+        let body = renderView("views/home_content.html", ViewData());
+        let scripts = "<script src=\"/js/ascii-hero.js\"></script>\n    <script src=\"/js/hero-video.js\"></script>";
+        this.wrapPage(
+            "Zeebroo — Grow your business with one platform",
+            "Zeebroo helps you grow your business with stock, POS, accounts, bills, HR, social campaigns, and more — all in one simple platform.",
+            body,
+            "",
+            scripts
+        );
+    }
+
+    method renderAbout() {
+        let body = renderView("views/about_content.html", ViewData());
+        this.wrapPage(
+            "About — Zeebroo",
+            "Learn about Zeebroo — the all-in-one platform for stock, POS, accounts, bills, HR, and marketing.",
+            body,
+            "about",
+            ""
+        );
     }
 
     method renderNotFound(path) {

@@ -134,6 +134,14 @@ a { color: inherit; }
 
 .nav-links a:hover { color: var(--black); }
 
+.nav-links a.is-active {
+    color: var(--black);
+}
+
+.page-hero {
+    padding-top: calc(var(--header-h) + 48px);
+}
+
 .nav-actions {
     display: flex;
     align-items: center;

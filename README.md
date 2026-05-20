@@ -15,6 +15,7 @@ Open **http://localhost:8788**
 ## Pages
 
 - `/` — Home (single-page marketing site)
+- `/about` — About Zeebroo
 
 ## Structure
 
@@ -22,7 +23,9 @@ Open **http://localhost:8788**
 - `config/app.melt` — Site name and port
 - `routes.melt` — URL routing + static files (`public/css`, `public/js`, `public/images`)
 - `controllers/` — Home and 404 handlers
-- `views/home.html` — Full landing page
+- `views/layout.html` — Shared header, footer, and navbar
+- `views/home_content.html` — Home page sections
+- `views/about_content.html` — About page content
 - `public/images/` — Logo, hero poster, and demo video (served at `/images/…`)
 
 ## Deploy (Ubuntu + Nginx + systemd)

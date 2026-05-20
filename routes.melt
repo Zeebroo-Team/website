@@ -1,4 +1,5 @@
 import "controllers/home_controller.melt";
+import "controllers/about_controller.melt";
 import "controllers/not_found_controller.melt";
 
 class Router {
@@ -6,6 +7,8 @@ class Router {
         if (servePublic(path)) return;
         if (path == "/" || path == "/index") {
             HomeController().index();
+        } else if (path == "/about") {
+            AboutController().index();
         } else {
             NotFoundController().show(path);
         }
