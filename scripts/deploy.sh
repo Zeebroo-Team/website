@@ -2,7 +2,7 @@
 # Run on the Ubuntu server (manually or via GitHub Actions SSH).
 set -euo pipefail
 
-DEPLOY_PATH="${DEPLOY_PATH:-/var/www/melt/melting-app}"
+DEPLOY_PATH="${DEPLOY_PATH:-/var/www/melting-app}"
 SERVICE_NAME="${SERVICE_NAME:-melting-app}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
 
