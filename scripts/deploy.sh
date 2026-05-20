@@ -10,7 +10,7 @@ cd "${DEPLOY_PATH}"
 
 if [[ ! -d .git ]]; then
   echo "ERROR: ${DEPLOY_PATH} is not a git repository. Clone the repo first."
-  echo "  git clone git@github.com:Zeebroo-Team/website.git ${DEPLOY_PATH}"
+  echo "sudo  git clone git@github.com:Zeebroo-Team/website.git ${DEPLOY_PATH}"
   exit 1
 fi
 
