@@ -14,12 +14,12 @@ Wants=network-online.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/melt/melting-app
+WorkingDirectory=/var/www/melting-app
 # Path to your built melt binary (install melting-lang on the server)
-ExecStart=/usr/local/bin/melt /var/www/melt/melting-app/main.melt
+ExecStart=melt /var/www/melting-app/main.melt
 Restart=on-failure
 RestartSec=5
-Environment=HOME=/var/www/melt
+Environment=HOME=/var/www/melting-app
 
 # Hardening (optional)
 NoNewPrivileges=true
