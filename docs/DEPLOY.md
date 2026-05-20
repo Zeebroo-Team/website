@@ -122,6 +122,7 @@ Manual deploy: **Actions → Deploy to production → Run workflow**.
 
 | Issue | Check |
 |-------|--------|
+| `dubious ownership in repository` | Deploy script adds `safe.directory` automatically. Or fix ownership: `sudo chown -R deploy:deploy /var/www/melt/melting-app` (use your deploy user and path) |
 | SSH auth failed | `SSH_PRIVATE_KEY`, `authorized_keys`, firewall port 22 |
 | `git` permission denied | Repo ownership; deploy user in correct group |
 | `sudo: a password is required` | `/etc/sudoers.d/melting-app-deploy` |

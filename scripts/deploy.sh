@@ -7,12 +7,17 @@ SERVICE_NAME="${SERVICE_NAME:-melting-app}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
 
 cd "${DEPLOY_PATH}"
+REPO_DIR="$(pwd)"
 
 if [[ ! -d .git ]]; then
   echo "ERROR: ${DEPLOY_PATH} is not a git repository. Clone the repo first."
-  echo "sudo  git clone git@github.com:Zeebroo-Team/website.git ${DEPLOY_PATH}"
+  echo "  git clone git@github.com:Zeebroo-Team/website.git ${DEPLOY_PATH}"
   exit 1
 fi
+
+# Git 2.35+ refuses to run when the repo is owned by another user (e.g. www-data).
+echo "==> Trusting repository directory for git..."
+git config --global --add safe.directory "${REPO_DIR}"
 
 echo "==> Pulling latest ${GIT_BRANCH}..."
 git fetch origin "${GIT_BRANCH}"
