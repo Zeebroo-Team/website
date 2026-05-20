@@ -1,0 +1,59 @@
+import "../config/app.melt";
+
+class ViewData {
+    method init() {}
+}
+
+class View {
+    method init() {
+        this.output = "";
+    }
+
+    method wrapPage(title, body, navKey) {
+        let layoutData = ViewData();
+        layoutData.title = title + " — " + app.name;
+        layoutData.content = body;
+        layoutData.navHome = "";
+        layoutData.navAbout = "";
+        layoutData.navContact = "";
+        if (navKey == "home") { layoutData.navHome = "active"; }
+        else if (navKey == "about") { layoutData.navAbout = "active"; }
+        else if (navKey == "contact") { layoutData.navContact = "active"; }
+        this.output = renderView("views/layout.html", layoutData);
+    }
+
+    method renderHome() {
+        let data = ViewData();
+        data.tagline = app.tagline;
+        let body = renderView("views/home.html", data);
+        this.wrapPage("Home", body, "home");
+    }
+
+    method renderAbout() {
+        let body = renderView("views/about.html", ViewData());
+        this.wrapPage("About", body, "about");
+    }
+
+    method renderContact() {
+        let data = ViewData();
+        data.message = "";
+        data.formStyle = "";
+        let body = renderView("views/contact.html", data);
+        this.wrapPage("Contact", body, "contact");
+    }
+
+    method renderContactSent(name) {
+        let data = ViewData();
+        data.message = "<p class=\"alert\">Thanks, " + name + "! We received your message and will get back to you soon.</p>";
+        data.formStyle = "display:none";
+        let body = renderView("views/contact.html", data);
+        this.wrapPage("Contact", body, "contact");
+    }
+
+    method renderNotFound(path) {
+        let data = ViewData();
+        data.path = path;
+        let body = renderView("views/404.html", data);
+        this.wrapPage("Not found", body, "");
+    }
+}

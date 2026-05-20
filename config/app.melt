@@ -1,0 +1,9 @@
+class AppConfig {
+    method init() {
+        this.name = "Zeebroo";
+        this.port = 8788;
+        this.tagline = "Creative digital experiences — built with Melt.";
+    }
+}
+
+let app = AppConfig();

@@ -1,0 +1,19 @@
+<section class="page">
+  <h1>Contact</h1>
+  {!! message !!}
+  <form method="post" action="/contact" class="contact-form" style="{{ formStyle }}">
+    <label>
+      <span>Name</span>
+      <input type="text" name="name" required placeholder="Your name">
+    </label>
+    <label>
+      <span>Email</span>
+      <input type="email" name="email" required placeholder="you@example.com">
+    </label>
+    <label>
+      <span>Message</span>
+      <textarea name="message" rows="4" required placeholder="How can we help?"></textarea>
+    </label>
+    <button type="submit" class="btn btn-primary">Send message</button>
+  </form>
+</section>
