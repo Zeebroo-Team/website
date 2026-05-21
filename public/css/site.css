@@ -732,6 +732,32 @@ a { color: inherit; }
     backdrop-filter: blur(4px);
 }
 
+.section--solutions .feature-card--media {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+}
+
+.section--solutions .feature-card__media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 140px;
+    margin: 0 0 16px;
+    padding: 4px 0;
+}
+
+.section--solutions .feature-card__media img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 132px;
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
 .section__eyebrow {
     display: inline-block;
     margin-bottom: 12px;
