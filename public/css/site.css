@@ -783,6 +783,91 @@ a { color: inherit; }
     font-size: 1.0625rem;
 }
 
+/* Benefits — split panel (image left, cards right) */
+.benefits-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 56px);
+    align-items: start;
+}
+
+.benefits-split__visual {
+    position: sticky;
+    top: calc(var(--header-h) + 28px);
+}
+
+.benefits-split__image {
+    width: 100%;
+    min-height: 420px;
+    object-fit: contain;
+    object-position: center bottom;
+    border-radius: var(--radius-lg);
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.benefits-split__content h2 {
+    margin: 0 0 12px;
+}
+
+.benefits-split__intro {
+    margin: 0 0 24px;
+    max-width: none;
+    color: var(--muted);
+    font-size: 1.0625rem;
+}
+
+.benefits-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.benefit-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 16px 18px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.benefit-card:hover {
+    border-color: rgba(234, 179, 8, 0.45);
+    transform: translateY(-1px);
+}
+
+.benefit-card__icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    background: var(--yellow-muted);
+    color: var(--black);
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.benefit-card__body h3 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--black);
+}
+
+.benefit-card__body p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
 /* Feature grid */
 .features-grid {
     display: grid;
@@ -1102,6 +1187,17 @@ a { color: inherit; }
     .site-nav.is-open .nav-actions .btn-ghost { display: inline-flex; }
 
     .steps { grid-template-columns: 1fr; }
+    .benefits-split {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .benefits-split__visual {
+        position: static;
+    }
+    .benefits-split__image {
+        min-height: 280px;
+        max-height: 480px;
+    }
     .pos-highlight { grid-template-columns: 1fr; }
     .opensource { grid-template-columns: 1fr; text-align: center; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
