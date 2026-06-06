@@ -16,7 +16,7 @@
     --radius-lg: 22px;
     --font: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
-    --header-h: 80px;
+    --header-h: 60px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -102,16 +102,16 @@ a { color: inherit; }
     display: block;
     width: auto;
     height: auto;
-    max-height: 56px;
-    max-width: min(280px, 55vw);
+    max-height: 40px;
+    max-width: min(220px, 55vw);
     border-radius: 0;
     object-fit: contain;
 }
 
 @media (min-width: 900px) {
     .brand--logo-only img {
-        max-height: 60px;
-        max-width: 300px;
+        max-height: 44px;
+        max-width: 240px;
     }
 }
 
@@ -176,9 +176,9 @@ a { color: inherit; }
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 22px;
+    padding: 9px 18px;
     font-family: var(--font);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     font-weight: 700;
     text-decoration: none;
     border-radius: 999px;
