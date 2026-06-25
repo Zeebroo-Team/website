@@ -148,14 +148,16 @@ class DownloadController {
         let historyHtml = "";
 
         if (db.open()) {
-            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY release_date DESC, id DESC LIMIT 1")) {
+            let semverDesc = "CAST(SUBSTR(version,1,INSTR(version||'.','.') - 1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),1,INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')-1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')+1) AS INTEGER) DESC";
+
+            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY " + semverDesc + " LIMIT 1")) {
                 let rows = sqliteFetchAll();
                 if (arrayLength(rows) > 0) {
                     latestHtml = this.buildLatest(arrayGet(rows, 0));
                 }
             }
 
-            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY release_date DESC, id DESC")) {
+            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY " + semverDesc)) {
                 let rows = sqliteFetchAll();
                 historyHtml = this.buildHistory(rows);
             }
