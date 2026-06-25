@@ -34,4 +34,11 @@ jobs:
             export SERVICE_NAME="${{ secrets.SERVICE_NAME }}"
             if [ -z "${DEPLOY_PATH}" ]; then export DEPLOY_PATH="/var/www/melting-app"; fi
             if [ -z "${SERVICE_NAME}" ]; then export SERVICE_NAME="melting-app"; fi
+            cd "${DEPLOY_PATH}"
+            CURRENT_REMOTE="$(git remote get-url origin 2>/dev/null || true)"
+            if [[ -n "${CURRENT_REMOTE}" && "${CURRENT_REMOTE}" != *"github.com"* ]]; then
+              REPO_PATH="$(echo "${CURRENT_REMOTE}" | sed 's/.*:\(.*\)/\1/')"
+              git remote set-url origin "git@github.com:${REPO_PATH}"
+              echo "==> Fixed remote URL: git@github.com:${REPO_PATH}"
+            fi
             bash "${DEPLOY_PATH}/scripts/deploy.sh"
