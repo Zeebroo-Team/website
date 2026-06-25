@@ -1,0 +1,98 @@
+import "../views/layout.melt";
+
+class IndustryController {
+    method show(path) {
+        let parts = splitString(path, "/");
+        this.slug = arrayGet(parts, 2);
+        let ind = ViewData();
+        ind.indSlug = this.slug;
+        ind.indName = this.getName();
+        ind.indIcon = this.getIcon();
+        ind.indBadge = this.getBadge();
+        ind.indHeroTitle = this.getHeroTitle();
+        ind.indHeroDesc = this.getHeroDesc();
+        ind.indMeta = this.getMeta();
+
+        if (ind.indName == "") {
+            NotFoundController().show(path);
+            return;
+        }
+
+        let view = View();
+        view.renderIndustry(ind);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(view.output);
+        setResponseStatus(200);
+    }
+
+    method getName() {
+        if (this.slug == "restaurant") return "Restaurant";
+        if (this.slug == "retail-stores") return "Retail Stores";
+        if (this.slug == "ecommerce") return "Ecommerce";
+        if (this.slug == "manufacturing") return "Manufacturing";
+        if (this.slug == "spare-parts") return "Spare Parts";
+        if (this.slug == "wholesale-distribution") return "Wholesale & Distribution";
+        if (this.slug == "non-profit") return "Non-Profit";
+        if (this.slug == "pharmacy-healthcare") return "Pharmacy & Healthcare";
+        if (this.slug == "hotel-hospitality") return "Hotel & Hospitality";
+        return "";
+    }
+
+    method getIcon() {
+        if (this.slug == "restaurant") return "fa-utensils";
+        if (this.slug == "retail-stores") return "fa-store";
+        if (this.slug == "ecommerce") return "fa-cart-shopping";
+        if (this.slug == "manufacturing") return "fa-industry";
+        if (this.slug == "spare-parts") return "fa-gears";
+        if (this.slug == "wholesale-distribution") return "fa-truck-fast";
+        if (this.slug == "non-profit") return "fa-heart";
+        if (this.slug == "pharmacy-healthcare") return "fa-pills";
+        if (this.slug == "hotel-hospitality") return "fa-hotel";
+        return "fa-layer-group";
+    }
+
+    method getBadge() {
+        if (this.slug == "restaurant") return "<span class=\"nmi__badge\">Popular</span>";
+        if (this.slug == "retail-stores") return "<span class=\"nmi__badge\">Popular</span>";
+        return "";
+    }
+
+    method getHeroTitle() {
+        if (this.slug == "restaurant") return "Run your restaurant without the chaos";
+        if (this.slug == "retail-stores") return "Sell smarter, stock better, grow faster";
+        if (this.slug == "ecommerce") return "Connect your online store to real-world operations";
+        if (this.slug == "manufacturing") return "Plan production, control materials, ship on time";
+        if (this.slug == "spare-parts") return "Find it fast. Sell it right. Never run short.";
+        if (this.slug == "wholesale-distribution") return "Bulk orders, happy clients, bills paid on time";
+        if (this.slug == "non-profit") return "Keep campaigns moving and records clean";
+        if (this.slug == "pharmacy-healthcare") return "Stock medicines right. Bill patients fast. Stay compliant.";
+        if (this.slug == "hotel-hospitality") return "Guests happy. Operations smooth. Accounts clear.";
+        return "Built for your industry";
+    }
+
+    method getHeroDesc() {
+        if (this.slug == "restaurant") return "From front of house to kitchen, Zeebroo connects your POS, stock, staff, and billing so your team can focus on food and guests.";
+        if (this.slug == "retail-stores") return "Give your shop floor and back office the same clear picture. Zeebroo keeps checkout, stock, staff, and accounts in sync.";
+        if (this.slug == "ecommerce") return "Keep inventory, orders, and fulfilment perfectly in sync whether you sell on your website, a marketplace, or both.";
+        if (this.slug == "manufacturing") return "Zeebroo gives your production team full visibility on raw materials, work in progress, and finished goods - all connected to billing and dispatch.";
+        if (this.slug == "spare-parts") return "Manage a complex parts catalogue, multiple suppliers, and fast-moving stock without losing track of what is on the shelf or on order.";
+        if (this.slug == "wholesale-distribution") return "Handle large order volumes, multiple client accounts, and complex deliveries without spreadsheets or missed payments.";
+        if (this.slug == "non-profit") return "Manage donations, fundraising campaigns, volunteer records, and expenses from one platform your entire team can trust.";
+        if (this.slug == "pharmacy-healthcare") return "From prescription stock control to patient billing and supplier reconciliation, Zeebroo keeps your pharmacy running without gaps.";
+        if (this.slug == "hotel-hospitality") return "From front desk to housekeeping and food and beverage, Zeebroo keeps every department in sync so nothing falls through the cracks.";
+        return "Zeebroo adapts to how your business actually works.";
+    }
+
+    method getMeta() {
+        if (this.slug == "restaurant") return "Manage restaurant orders, ingredient stock, staff, and billing in one platform. Zeebroo is built for busy restaurant operations.";
+        if (this.slug == "retail-stores") return "One platform for retail checkout, stock management, staff, and accounts. Zeebroo helps retail shops run efficiently.";
+        if (this.slug == "ecommerce") return "Manage ecommerce inventory, orders, and fulfilment in one platform. Zeebroo prevents overselling and keeps operations aligned.";
+        if (this.slug == "manufacturing") return "Manage production planning, raw materials, finished goods, and dispatch in one platform. Zeebroo keeps manufacturing clear.";
+        if (this.slug == "spare-parts") return "Manage a spare parts catalogue, stock levels, and supplier orders in one platform. Zeebroo helps spare parts businesses sell faster.";
+        if (this.slug == "wholesale-distribution") return "Manage wholesale orders, client accounts, deliveries, and supplier bills in one platform. Zeebroo is built for distribution businesses.";
+        if (this.slug == "non-profit") return "Manage non-profit donations, campaigns, volunteers, and accounts in one platform. Zeebroo helps non-profits stay organised.";
+        if (this.slug == "pharmacy-healthcare") return "Manage pharmacy stock, patient billing, prescriptions, and compliance in one platform. Zeebroo helps pharmacies stay organised.";
+        if (this.slug == "hotel-hospitality") return "Manage hotel operations, guest billing, F&B stock, and staff in one platform. Zeebroo brings hospitality departments together.";
+        return "Zeebroo - the all-in-one platform for your industry.";
+    }
+}

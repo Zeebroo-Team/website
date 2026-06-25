@@ -1,0 +1,176 @@
+import "../views/layout.melt";
+import "../config/db.melt";
+
+class DownloadController {
+
+    method dlBtn(label, faIcon, url, style) {
+        let href = url;
+        if (href == "") {
+            href = "/#contact";
+        }
+        return "<a class=\"btn " + style + "\" href=\"" + href + "\"><i class=\"fa-brands " + faIcon + "\" aria-hidden=\"true\"></i> " + label + "</a>";
+    }
+
+    method buildLatest(row) {
+        let version  = row[1];
+        let date     = row[2];
+        let channel  = row[3];
+        let notes    = row[4];
+        let winUrl   = row[5];
+        let macUrl   = row[6];
+        let linUrl   = row[7];
+
+        let badgeCls = "release-badge--stable";
+        let badgeTxt = "Stable";
+        if (channel == "beta") {
+            badgeCls = "release-badge--beta";
+            badgeTxt = "Beta";
+        }
+
+        let changelogHtml = "";
+        let lines = splitString(notes, "|");
+        let li = 0;
+        while (li < arrayLength(lines)) {
+            let line = arrayGet(lines, li);
+            if (line != "") {
+                changelogHtml = changelogHtml + "<li><i class=\"fa fa-check\" aria-hidden=\"true\"></i> " + line + "</li>";
+            }
+            li = li + 1;
+        }
+
+        let html = "";
+        html = html + "<div class=\"latest-release\">";
+        html = html + "  <div class=\"latest-release__body\">";
+        html = html + "    <div class=\"latest-release__top\">";
+        html = html + "      <span class=\"latest-release__label\">Latest release</span>";
+        html = html + "      <span class=\"release-badge " + badgeCls + "\">" + badgeTxt + "</span>";
+        html = html + "    </div>";
+        html = html + "    <div class=\"latest-release__version\">v" + version + "</div>";
+        html = html + "    <p class=\"latest-release__date\">Released " + date + "</p>";
+        html = html + "    <p class=\"latest-release__whats-new\">What's new in v" + version + "</p>";
+        html = html + "    <ul class=\"latest-release__changelog\">" + changelogHtml + "</ul>";
+        html = html + "  </div>";
+        html = html + "  <div class=\"latest-release__side\">";
+        html = html + "    <p class=\"latest-release__dl-label\">Download v" + version + "</p>";
+        html = html + "    <div class=\"latest-release__btns\">";
+        html = html + "      " + this.dlBtn("Windows", "fa-windows", winUrl, "btn-primary");
+        html = html + "      " + this.dlBtn("macOS", "fa-apple", macUrl, "btn-secondary");
+        html = html + "      " + this.dlBtn("Linux", "fa-linux", linUrl, "btn-secondary");
+        html = html + "    </div>";
+        html = html + "    <p class=\"latest-release__req-note\">Requires Windows 10/11, macOS 12+, or Ubuntu 20.04+</p>";
+        html = html + "  </div>";
+        html = html + "</div>";
+
+        return html;
+    }
+
+    method buildHistory(rows) {
+        if (arrayLength(rows) == 0) {
+            return "<p class=\"release-empty\">No releases found.</p>";
+        }
+
+        let html = "<div class=\"release-list\">";
+        let ri = 0;
+        while (ri < arrayLength(rows)) {
+            let row     = arrayGet(rows, ri);
+            let version = row[1];
+            let date    = row[2];
+            let channel = row[3];
+            let notes   = row[4];
+            let winUrl  = row[5];
+            let macUrl  = row[6];
+            let linUrl  = row[7];
+
+            let badgeCls = "release-badge--stable";
+            let badgeTxt = "Stable";
+            if (channel == "beta") {
+                badgeCls = "release-badge--beta";
+                badgeTxt = "Beta";
+            }
+
+            let latestTag = "";
+            if (ri == 0) {
+                latestTag = " <span class=\"release-latest-tag\">Latest</span>";
+            }
+
+            let changelogHtml = "";
+            let lines = splitString(notes, "|");
+            let li = 0;
+            while (li < arrayLength(lines)) {
+                let line = arrayGet(lines, li);
+                if (line != "") {
+                    changelogHtml = changelogHtml + "<li>" + line + "</li>";
+                }
+                li = li + 1;
+            }
+
+            let dlHtml = "";
+            if (winUrl != "") {
+                dlHtml = dlHtml + "<a href=\"" + winUrl + "\" class=\"rel-dl-link\"><i class=\"fa-brands fa-windows\" aria-hidden=\"true\"></i> Windows</a>";
+            } else {
+                dlHtml = dlHtml + "<a href=\"/#contact\" class=\"rel-dl-link rel-dl-link--req\"><i class=\"fa-brands fa-windows\" aria-hidden=\"true\"></i> Windows</a>";
+            }
+            if (macUrl != "") {
+                dlHtml = dlHtml + "<a href=\"" + macUrl + "\" class=\"rel-dl-link\"><i class=\"fa-brands fa-apple\" aria-hidden=\"true\"></i> macOS</a>";
+            } else {
+                dlHtml = dlHtml + "<a href=\"/#contact\" class=\"rel-dl-link rel-dl-link--req\"><i class=\"fa-brands fa-apple\" aria-hidden=\"true\"></i> macOS</a>";
+            }
+            if (linUrl != "") {
+                dlHtml = dlHtml + "<a href=\"" + linUrl + "\" class=\"rel-dl-link\"><i class=\"fa-brands fa-linux\" aria-hidden=\"true\"></i> Linux</a>";
+            } else {
+                dlHtml = dlHtml + "<a href=\"/#contact\" class=\"rel-dl-link rel-dl-link--req\"><i class=\"fa-brands fa-linux\" aria-hidden=\"true\"></i> Linux</a>";
+            }
+
+            html = html + "<div class=\"release-row\">";
+            html = html + "  <div class=\"release-row__header\">";
+            html = html + "    <div class=\"release-row__left\">";
+            html = html + "      <span class=\"release-row__version\">v" + version + latestTag + "</span>";
+            html = html + "      <span class=\"release-badge " + badgeCls + "\">" + badgeTxt + "</span>";
+            html = html + "    </div>";
+            html = html + "    <div class=\"release-row__right\">";
+            html = html + "      <span class=\"release-row__date\">" + date + "</span>";
+            html = html + "      <div class=\"release-row__dls\">" + dlHtml + "</div>";
+            html = html + "    </div>";
+            html = html + "  </div>";
+            html = html + "  <ul class=\"release-row__notes\">" + changelogHtml + "</ul>";
+            html = html + "</div>";
+
+            ri = ri + 1;
+        }
+
+        html = html + "</div>";
+        return html;
+    }
+
+    method index() {
+        let db = DB();
+        let latestHtml  = "";
+        let historyHtml = "";
+
+        if (db.open()) {
+            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY release_date DESC, id DESC LIMIT 1")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) > 0) {
+                    latestHtml = this.buildLatest(arrayGet(rows, 0));
+                }
+            }
+
+            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY release_date DESC, id DESC")) {
+                let rows = sqliteFetchAll();
+                historyHtml = this.buildHistory(rows);
+            }
+
+            db.close();
+        }
+
+        let data = ViewData();
+        data.latestRelease  = latestHtml;
+        data.releaseHistory = historyHtml;
+
+        let view = View();
+        view.renderDownload(data);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(view.output);
+        setResponseStatus(200);
+    }
+}

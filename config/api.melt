@@ -1,0 +1,9 @@
+// Pipeline API key - change this before deploying to production.
+// Set the same key in your CI/CD pipeline secret (e.g. ZEEBROO_API_KEY).
+class ApiConfig {
+    method init() {
+        this.key = "zbr_live_CHANGEME_replace_with_a_strong_secret";
+    }
+}
+
+let apiConfig = ApiConfig();

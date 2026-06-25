@@ -11,7 +11,11 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer"></noscript>
     <link rel="stylesheet" href="/css/site.css">
-    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/images/site.webmanifest">
 </head>
 <body>
     <header class="site-header">
@@ -23,68 +27,222 @@
                 <li><a href="/#benefits">Benefits</a></li>
                 <li class="has-mega">
                     <button type="button" class="nav-mega-trigger" aria-expanded="false" aria-controls="navMegaSolutions">
+                        Industry
+                        <svg class="nav-mega-caret" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="nav-mega" id="navMegaSolutions" role="region" aria-label="Industry solutions">
+                        <div class="nav-mega__inner">
+
+                            <div class="nav-mega__hero">
+                                <span class="nav-mega__hero-icon" aria-hidden="true"><i class="fa fa-layer-group"></i></span>
+                                <span class="nav-mega__eyebrow">Industry solutions</span>
+                                <h3 class="nav-mega__headline">Built for your industry</h3>
+                                <p class="nav-mega__pitch">Zeebroo adapts to how your business actually works - not the other way round.</p>
+                                <ul class="nav-mega__perks" aria-hidden="true">
+                                    <li><i class="fa fa-check"></i> Quick setup</li>
+                                    <li><i class="fa fa-check"></i> No long contracts</li>
+                                    <li><i class="fa fa-check"></i> All modules included</li>
+                                </ul>
+                                <a href="/#contact" class="nav-mega__cta">
+                                    Request a demo
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </a>
+                            </div>
+
+                            <div class="nav-mega__industries">
+                                <div class="nmi-header">
+                                    <span class="nmi-header__label">Browse by industry</span>
+                                    <span class="nmi-header__count">9 industries</span>
+                                </div>
+                                <div class="nmi-grid">
+                                    <a href="/industry/restaurant" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-utensils"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Restaurant <span class="nmi__badge">Popular</span></span>
+                                            <span class="nmi__desc">Tables, orders, and kitchen flow</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/retail-stores" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-store"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Retail Stores <span class="nmi__badge">Popular</span></span>
+                                            <span class="nmi__desc">Counter sales, stock, and daily reports</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/ecommerce" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-cart-shopping"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Ecommerce</span>
+                                            <span class="nmi__desc">Orders, inventory, and fulfilment</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/manufacturing" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-industry"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Manufacturing</span>
+                                            <span class="nmi__desc">Production, materials, and dispatch</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/spare-parts" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-gears"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Spare Parts</span>
+                                            <span class="nmi__desc">Parts catalogue and fast checkout</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/wholesale-distribution" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-truck-fast"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Wholesale &amp; Distribution</span>
+                                            <span class="nmi__desc">Bulk orders and client accounts</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/non-profit" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-heart"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Non-Profit</span>
+                                            <span class="nmi__desc">Donations, campaigns, volunteers</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/pharmacy-healthcare" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-pills"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Pharmacy &amp; Healthcare</span>
+                                            <span class="nmi__desc">Medicine stock and compliance</span>
+                                        </span>
+                                    </a>
+                                    <a href="/industry/hotel-hospitality" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-hotel"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Hotel &amp; Hospitality</span>
+                                            <span class="nmi__desc">Rooms, billing, and staff ops</span>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="nmi-footer">
+                                    <span>Don't see your industry?</span>
+                                    <a href="/#contact">
+                                        Talk to us
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+                <li class="has-mega">
+                    <button type="button" class="nav-mega-trigger" aria-expanded="false" aria-controls="navMegaProducts">
                         Solutions
                         <svg class="nav-mega-caret" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                             <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <div class="nav-mega" id="navMegaSolutions" role="region" aria-label="Solutions menu">
+                    <div class="nav-mega" id="navMegaProducts" role="region" aria-label="Product solutions">
                         <div class="nav-mega__inner">
-                            <div class="nav-mega__grid">
-                                <a href="/#solutions" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-boxes-stacked"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Stock management</span>
-                                        <span class="nav-mega__desc">Track products, batches, and reorder levels across all locations.</span>
-                                    </span>
-                                </a>
-                                <a href="/#pos" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-cash-register"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Point of sale</span>
-                                        <span class="nav-mega__desc">Fast browser checkout with cash, card, and receipt printing.</span>
-                                    </span>
-                                </a>
-                                <a href="/#solutions" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-users"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Human resources</span>
-                                        <span class="nav-mega__desc">Manage team roles, shifts, and HR workflows in one place.</span>
-                                    </span>
-                                </a>
-                                <a href="/#solutions" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-bullhorn"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Social campaigns</span>
-                                        <span class="nav-mega__desc">Plan and run promotions aligned with your stock and sales data.</span>
-                                    </span>
-                                </a>
-                                <a href="/#solutions" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-building-columns"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Account management</span>
-                                        <span class="nav-mega__desc">Track business accounts, branches, and balances with clarity.</span>
-                                    </span>
-                                </a>
-                                <a href="/#solutions" class="nav-mega__item">
-                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-file-invoice-dollar"></i></span>
-                                    <span class="nav-mega__body">
-                                        <span class="nav-mega__title">Bill management</span>
-                                        <span class="nav-mega__desc">Create, track, and pay supplier bills and customer invoices.</span>
-                                    </span>
+
+                            <div class="nav-mega__hero">
+                                <span class="nav-mega__hero-icon" aria-hidden="true"><i class="fa fa-layer-group"></i></span>
+                                <span class="nav-mega__eyebrow">Product suite</span>
+                                <h3 class="nav-mega__headline">Everything your business needs</h3>
+                                <p class="nav-mega__pitch">Zeebroo brings sales, people, finance, and automation into one connected platform.</p>
+                                <ul class="nav-mega__perks" aria-hidden="true">
+                                    <li><i class="fa fa-check"></i> All modules included</li>
+                                    <li><i class="fa fa-check"></i> No extra licenses</li>
+                                    <li><i class="fa fa-check"></i> Works across branches</li>
+                                </ul>
+                                <a href="/#contact" class="nav-mega__cta">
+                                    Request a demo
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </a>
                             </div>
-                            <div class="nav-mega__footer">
-                                <a href="/#solutions" class="nav-mega__all">
-                                    View all solutions
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                </a>
+
+                            <div class="nav-mega__industries">
+                                <div class="nmi-header">
+                                    <span class="nmi-header__label">Browse by product</span>
+                                    <span class="nmi-header__count">9 modules</span>
+                                </div>
+                                <div class="nmi-grid">
+                                    <a href="/#pos" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-cash-register"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Point of Sales <span class="nmi__badge">Popular</span></span>
+                                            <span class="nmi__desc">Fast checkout, receipts, and cash flow</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#erp" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-diagram-project"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Enterprise Resource Management</span>
+                                            <span class="nmi__desc">Operations, supply chain, and reporting</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#hr" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-people-group"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Human Resource Management</span>
+                                            <span class="nmi__desc">Staff, payroll, attendance, and leaves</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#design" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-pen-ruler"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Design Studio</span>
+                                            <span class="nmi__desc">Marketing creatives for your business</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#accounting" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-file-invoice-dollar"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Accounting Management</span>
+                                            <span class="nmi__desc">Invoices, expenses, and financial reports</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#multibranch" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-code-branch"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Multibranch Management</span>
+                                            <span class="nmi__desc">Run all locations from one dashboard</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#crm" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-handshake"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Client Relation Management</span>
+                                            <span class="nmi__desc">Leads, contacts, and customer history</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#automation" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-robot"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">Business Automation</span>
+                                            <span class="nmi__desc">Workflows, triggers, and smart rules</span>
+                                        </span>
+                                    </a>
+                                    <a href="/#ai-agent" class="nmi">
+                                        <span class="nmi__icon" aria-hidden="true"><i class="fa fa-brain"></i></span>
+                                        <span class="nmi__body">
+                                            <span class="nmi__name">AI Agent <span class="nmi__badge">New</span></span>
+                                            <span class="nmi__desc">Grow your business with AI-powered insights</span>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="nmi-footer">
+                                    <span>Want to see it in action?</span>
+                                    <a href="/#contact">
+                                        Talk to us
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </a>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </li>
-                <li><a href="/#pos">Point of sale</a></li>
                 <li><a href="/#why">Why Zeebroo</a></li>
+                <li><a href="/download" class="{{ navDownload }}">Download</a></li>
                 <li><a href="/about" class="{{ navAbout }}">About</a></li>
             </ul>
             <div class="nav-actions">
@@ -113,7 +271,7 @@
                     <ul>
                         <li><a href="/#benefits">Benefits</a></li>
                         <li><a href="/#solutions">Solutions</a></li>
-                        <li><a href="/#pos">Point of sale</a></li>
+                        <li><a href="/#pos">Solutions</a></li>
                         <li><a href="/about">About</a></li>
                     </ul>
                 </div>

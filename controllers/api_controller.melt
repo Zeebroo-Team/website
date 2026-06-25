@@ -1,0 +1,147 @@
+import "../config/db.melt";
+import "../config/api.melt";
+
+class ApiController {
+
+    method esc(val) {
+        return replaceString(val, "'", "''");
+    }
+
+    method jsonResp(status, obj) {
+        setResponseStatus(status);
+        setResponseContentType("application/json; charset=utf-8");
+        setResponseHeader("Access-Control-Allow-Origin", "*");
+        setResponseBody(jsonEncode(obj));
+    }
+
+    method err(status, msg) {
+        let o = objectCreate();
+        o.ok = false;
+        o.error = msg;
+        this.jsonResp(status, o);
+    }
+
+    // Safely read a string field from a jsonDecode'd object.
+    // Missing fields return false (bool) via bracket access; present fields return their value.
+    method field(obj, name, fallback) {
+        let raw = obj[name];
+        if (raw == false) {
+            return fallback;
+        }
+        let val = raw + "";
+        if (val == "" || val == "null") {
+            return fallback;
+        }
+        return val;
+    }
+
+    // Safely read an array field; returns empty string if missing.
+    method notesFromArray(obj) {
+        let result = "";
+        try {
+            let arr = obj["notes"];
+            let n = arrayLength(arr);
+            let i = 0;
+            while (i < n) {
+                let line = arrayGet(arr, i) + "";
+                if (line != "" && line != "null") {
+                    if (result != "") {
+                        result = result + "|";
+                    }
+                    result = result + line;
+                }
+                i = i + 1;
+            }
+        } catch (e) {
+            result = "";
+        }
+        return result;
+    }
+
+    method publishRelease() {
+        if (getRequestMethod() != "POST") {
+            this.err(405, "Method not allowed. Use: POST /api/releases");
+            return;
+        }
+
+        // Auth: X-Api-Key header  OR  Authorization: Bearer <key>
+        let apiKey = getRequestHeader("X-Api-Key");
+        if (apiKey == "") {
+            let auth = getRequestHeader("Authorization");
+            let parts = splitString(auth, " ");
+            if (arrayLength(parts) >= 2) {
+                apiKey = arrayGet(parts, 1);
+            }
+        }
+
+        if (apiKey != apiConfig.key) {
+            this.err(401, "Unauthorized. Provide a valid X-Api-Key header.");
+            return;
+        }
+
+        let body = getRequestBody();
+        if (body == "") {
+            this.err(400, "Empty request body. Expected JSON.");
+            return;
+        }
+
+        let data = jsonDecode(body);
+
+        // Required fields
+        let version = this.field(data, "version", "");
+        if (version == "") {
+            this.err(400, "Missing required field: version");
+            return;
+        }
+
+        let releaseDate = this.field(data, "release_date", "");
+        if (releaseDate == "") {
+            this.err(400, "Missing required field: release_date (YYYY-MM-DD)");
+            return;
+        }
+
+        // Optional fields
+        let channel    = this.field(data, "channel",     "stable");
+        let windowsUrl = this.field(data, "windows_url", "");
+        let macosUrl   = this.field(data, "macos_url",   "");
+        let linuxUrl   = this.field(data, "linux_url",   "");
+
+        // notes: JSON array preferred, plain string accepted
+        let notes = this.notesFromArray(data);
+        if (notes == "") {
+            notes = this.field(data, "notes", "");
+        }
+
+        // Persist
+        let db = DB();
+        if (!db.open()) {
+            this.err(500, "Database unavailable.");
+            return;
+        }
+
+        let sql = "INSERT OR REPLACE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES ('" +
+            this.esc(version)     + "', '" +
+            this.esc(releaseDate) + "', '" +
+            this.esc(channel)     + "', '" +
+            this.esc(notes)       + "', '" +
+            this.esc(windowsUrl)  + "', '" +
+            this.esc(macosUrl)    + "', '" +
+            this.esc(linuxUrl)    + "')";
+
+        let ok = sqliteExec(sql);
+        db.close();
+
+        if (!ok) {
+            this.err(500, "Failed to write release. Duplicate version - use a unique version string.");
+            return;
+        }
+
+        let resp = objectCreate();
+        resp.ok           = true;
+        resp.version      = version;
+        resp.channel      = channel;
+        resp.release_date = releaseDate;
+        resp.message      = "Release v" + version + " published. The /download page is now live.";
+        this.jsonResp(201, resp);
+    }
+}

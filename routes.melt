@@ -1,14 +1,25 @@
 import "controllers/home_controller.melt";
 import "controllers/about_controller.melt";
+import "controllers/industry_controller.melt";
+import "controllers/download_controller.melt";
+import "controllers/api_controller.melt";
 import "controllers/not_found_controller.melt";
 
 class Router {
     method dispatch(path) {
         if (servePublic(path)) return;
+        let parts = splitString(path, "/");
+        let seg1 = arrayGet(parts, 1);
         if (path == "/" || path == "/index") {
             HomeController().index();
         } else if (path == "/about") {
             AboutController().index();
+        } else if (path == "/download") {
+            DownloadController().index();
+        } else if (path == "/api/releases") {
+            ApiController().publishRelease();
+        } else if (seg1 == "industry") {
+            IndustryController().show(path);
         } else {
             NotFoundController().show(path);
         }

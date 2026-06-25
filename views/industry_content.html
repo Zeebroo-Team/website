@@ -1,0 +1,110 @@
+    <div id="ind-page" data-slug="{{ indSlug }}">
+
+        <!-- Breadcrumb -->
+        <div class="ind-breadcrumb-wrap">
+            <div class="container">
+                <nav class="ind-breadcrumb" aria-label="Breadcrumb">
+                    <a href="/">Home</a>
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <a href="/#solutions">Industry</a>
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <span id="ind-bc-label" aria-current="page">{{ indName }}</span>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Hero -->
+        <section class="section section--cream ind-hero">
+            <div class="container">
+                <div class="ind-hero__inner">
+                    <div class="ind-hero__left">
+                        <div class="ind-hero__label">
+                            <span class="ind-hero__icon-wrap" aria-hidden="true">
+                                <i class="fa {{ indIcon }}"></i>
+                            </span>
+                            {!! indBadge !!}
+                        </div>
+                        <h1 class="ind-hero__title" id="ind-hero-title">{{ indHeroTitle }}</h1>
+                        <p class="ind-hero__desc" id="ind-hero-desc">{{ indHeroDesc }}</p>
+                        <div class="hero__cta">
+                            <a class="btn btn-primary" href="/#contact">Request a demo</a>
+                            <a class="btn btn-secondary" href="/#solutions">All industries</a>
+                        </div>
+                    </div>
+                    <div class="ind-hero__right">
+                        <div id="ind-stats">
+                            <div class="ind-stats-panel ind-skel-block" aria-hidden="true">
+                                <div class="ind-skel-stat"></div>
+                                <div class="ind-skel-stat"></div>
+                                <div class="ind-skel-stat"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section section--white">
+            <div class="container">
+                <span class="section__eyebrow" id="ind-feat-eyebrow">Why teams choose Zeebroo</span>
+                <h2 id="ind-feat-heading">Everything your business needs in one place</h2>
+                <div class="ind-features-grid" id="ind-features">
+                    <div class="ind-skel-block ind-skel-grid" aria-hidden="true">
+                        <div class="ind-skel-card"></div>
+                        <div class="ind-skel-card"></div>
+                        <div class="ind-skel-card"></div>
+                        <div class="ind-skel-card"></div>
+                        <div class="ind-skel-card"></div>
+                        <div class="ind-skel-card"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="section section--cream">
+            <div class="container">
+                <span class="section__eyebrow">Simple from day one</span>
+                <h2>Up and running in three steps</h2>
+                <div class="ind-steps-grid" id="ind-steps">
+                    <div class="ind-skel-block ind-skel-steps" aria-hidden="true">
+                        <div class="ind-skel-step"></div>
+                        <div class="ind-skel-step"></div>
+                        <div class="ind-skel-step"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related industries -->
+        <section class="section section--white">
+            <div class="container">
+                <span class="section__eyebrow">More industry solutions</span>
+                <h2>Explore other industries</h2>
+                <div class="ind-related-grid" id="ind-related">
+                    <div class="ind-skel-block ind-skel-related" aria-hidden="true">
+                        <div class="ind-skel-rel-card"></div>
+                        <div class="ind-skel-rel-card"></div>
+                        <div class="ind-skel-rel-card"></div>
+                        <div class="ind-skel-rel-card"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section section--cream" id="contact">
+            <div class="container">
+                <div class="cta-band">
+                    <h2>Ready to get started?</h2>
+                    <p id="ind-cta-desc">Tell us about your business and we will show you how Zeebroo fits the way you work.</p>
+                    <div class="hero__cta">
+                        <a class="btn btn-primary" href="mailto:hello@zeebroo.com">Email us</a>
+                        <a class="btn btn-secondary" href="/">Back to home</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>

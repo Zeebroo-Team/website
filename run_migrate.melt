@@ -1,0 +1,72 @@
+// Run from project root:
+//   /path/to/melt run_migrate.melt
+
+let ok = sqliteOpen("database/zeebroo.sqlite");
+if (!ok) {
+    print "migrate: could not open database/zeebroo.sqlite";
+} else {
+    sqliteExec("CREATE TABLE IF NOT EXISTS releases (
+        id           INTEGER PRIMARY KEY AUTOINCREMENT,
+        version      TEXT    NOT NULL UNIQUE,
+        release_date TEXT    NOT NULL,
+        channel      TEXT    NOT NULL DEFAULT 'stable',
+        notes        TEXT,
+        windows_url  TEXT    DEFAULT '',
+        macos_url    TEXT    DEFAULT '',
+        linux_url    TEXT    DEFAULT '',
+        created_at   TEXT    DEFAULT (datetime('now'))
+    )");
+
+    sqliteExec("INSERT OR IGNORE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES (
+        '1.3.0',
+        '2026-06-20',
+        'stable',
+        'Multi-branch sync is now live across all plans|Thermal printer compatibility improved for Epson and Star models|Fixed slow startup issue on Windows 11|New keyboard shortcuts for faster checkout flow|Performance improvements reduce load times by 40 percent',
+        '',
+        '',
+        ''
+    )");
+
+    sqliteExec("INSERT OR IGNORE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES (
+        '1.2.1',
+        '2026-05-15',
+        'stable',
+        'Security patch for session token handling|Fixed receipt total rounding error on split payments|Minor UI tweaks on the login screen|Resolved crash on Linux when opening large product lists',
+        '',
+        '',
+        ''
+    )");
+
+    sqliteExec("INSERT OR IGNORE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES (
+        '1.2.0',
+        '2026-04-10',
+        'stable',
+        'Introduced multi-branch dashboard with live cross-branch stock view|Added offline mode so POS keeps running without internet|Barcode scanner response time improved by 60 percent|Stock alert notifications via email and in-app|Customer account balance tracking added to checkout',
+        '',
+        '',
+        ''
+    )");
+
+    sqliteExec("INSERT OR IGNORE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES (
+        '1.1.0',
+        '2026-02-28',
+        'stable',
+        'HR module integration - staff, attendance, and leaves in one place|Payroll export to CSV and PDF|Fixed discount rounding on bulk orders|Improved receipt templates with logo support|Added dark mode for the desktop app',
+        '',
+        '',
+        ''
+    )");
+
+    sqliteExec("INSERT OR IGNORE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES (
+        '1.0.0',
+        '2026-01-10',
+        'stable',
+        'Initial public release of the Zeebroo desktop POS app|Windows, macOS, and Linux support from day one|Full POS with barcode scanning and thermal receipt printing|Real-time sync with the Zeebroo web platform|Cash, card, and credit payment modes',
+        '',
+        '',
+        ''
+    )");
+
+    sqliteClose();
+    print "migrate: done - releases table ready with seed data.";
+}

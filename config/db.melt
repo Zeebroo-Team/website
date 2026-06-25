@@ -1,0 +1,8 @@
+class DB {
+    method open() {
+        return sqliteOpen("database/zeebroo.sqlite");
+    }
+    method close() {
+        sqliteClose();
+    }
+}

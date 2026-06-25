@@ -1,0 +1,587 @@
+{
+  "restaurant": {
+    "slug": "restaurant",
+    "name": "Restaurant",
+    "icon": "fa-utensils",
+    "badge": "Popular",
+    "tagline": "Tables, orders, and kitchen flow",
+    "heroTitle": "Run your restaurant without the chaos",
+    "heroDesc": "From front of house to kitchen, Zeebroo connects your POS, stock, staff, and billing so your team can focus on food and guests - not on juggling apps.",
+    "metaDesc": "Manage restaurant orders, ingredient stock, staff, and billing in one platform. Zeebroo is built for busy restaurant operations.",
+    "challenge": "Running a restaurant means managing hundreds of decisions every service. Zeebroo gives every role - cashier, kitchen, manager, owner - exactly the tools they need.",
+    "features": [
+      {
+        "icon": "fa-cash-register",
+        "title": "Fast table-side checkout",
+        "desc": "Take orders and payments at the table or counter. Split bills, apply discounts, and print receipts in seconds - even during the busiest service."
+      },
+      {
+        "icon": "fa-box-open",
+        "title": "Ingredient stock control",
+        "desc": "Track raw materials and finished dishes. Get low-stock alerts before service so you never run out mid-shift and always know what to reorder."
+      },
+      {
+        "icon": "fa-users",
+        "title": "Staff scheduling and HR",
+        "desc": "Roster floor and kitchen teams, track hours, and manage HR records without a separate app. Every shift, every role, in one place."
+      },
+      {
+        "icon": "fa-chart-bar",
+        "title": "Daily sales and menu reports",
+        "desc": "See which dishes drive revenue, which shifts are busiest, and where margins can improve. Clear data every day without exporting spreadsheets."
+      },
+      {
+        "icon": "fa-bullhorn",
+        "title": "Promotions and campaigns",
+        "desc": "Schedule happy hour deals, seasonal promotions, and loyalty offers from the same platform you use to run the business. Keep marketing aligned with stock."
+      },
+      {
+        "icon": "fa-file-invoice-dollar",
+        "title": "Supplier bills and accounts",
+        "desc": "Track what you owe suppliers, reconcile accounts, and pay bills on time - all without switching to a separate accounting tool."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Set up your menu and stock",
+        "desc": "Add dishes, ingredients, and prices. Zeebroo keeps stock in sync automatically as items sell through each service."
+      },
+      {
+        "n": "02",
+        "title": "Train your team once",
+        "desc": "Cashiers, kitchen staff, and managers each get the right view with the right permissions. One system everyone uses from day one."
+      },
+      {
+        "n": "03",
+        "title": "Close each day with clarity",
+        "desc": "Daily sales summaries, stock movement, and outstanding supplier bills - ready before you lock up, no manual totalling required."
+      }
+    ],
+    "stats": [
+      { "value": "3x", "label": "Faster checkout than manual billing" },
+      { "value": "40%", "label": "Less time on end-of-day reconciliation" },
+      { "value": "100%", "label": "Stock visibility across all branches" }
+    ]
+  },
+  "retail-stores": {
+    "slug": "retail-stores",
+    "name": "Retail Stores",
+    "icon": "fa-store",
+    "badge": "Popular",
+    "tagline": "Counter sales, stock, and daily reports",
+    "heroTitle": "Sell smarter, stock better, grow faster",
+    "heroDesc": "Give your shop floor and back office the same clear picture. Zeebroo keeps checkout, stock, staff, and accounts in sync so you always know where your business stands.",
+    "metaDesc": "One platform for retail checkout, stock management, staff, and accounts. Zeebroo helps retail shops run efficiently and grow with confidence.",
+    "challenge": "Retail moves fast. Stock goes wrong, cashiers need quick checkout, and managers need reports without digging. Zeebroo puts everyone on the same page.",
+    "features": [
+      {
+        "icon": "fa-cash-register",
+        "title": "Counter and web POS",
+        "desc": "Fast checkout in the browser or on a dedicated desktop app. Scan barcodes, process cash and card, and print receipts without slowing the queue."
+      },
+      {
+        "icon": "fa-boxes-stacked",
+        "title": "Live stock levels",
+        "desc": "See exactly what is on the shelf and in the stockroom at any moment. Reorder alerts stop shelves going empty before you notice."
+      },
+      {
+        "icon": "fa-barcode",
+        "title": "Barcode and batch tracking",
+        "desc": "Track products by barcode, batch, or serial number. Perfect for products with expiry dates, warranties, or return policies."
+      },
+      {
+        "icon": "fa-user-tag",
+        "title": "Customer accounts and credit",
+        "desc": "Open accounts for regular customers, track credit balances, and manage outstanding bills from the same screen as your daily sales."
+      },
+      {
+        "icon": "fa-user-shield",
+        "title": "Staff roles and permissions",
+        "desc": "Give cashiers, supervisors, and owners the right access. Managers can run reports; cashiers can process sales. No overlap, no confusion."
+      },
+      {
+        "icon": "fa-chart-line",
+        "title": "End-of-day sales reports",
+        "desc": "Daily sales totals, top-selling products, and outstanding receivables - ready when you close up, formatted for quick review."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Add your products and prices",
+        "desc": "Import your catalogue or add products one by one. Set prices, tax rates, and reorder points in minutes."
+      },
+      {
+        "n": "02",
+        "title": "Set up your team and tills",
+        "desc": "Create logins for each cashier and manager. Install the desktop POS app on each till, or run POS directly in the browser."
+      },
+      {
+        "n": "03",
+        "title": "Sell and watch the data flow",
+        "desc": "Every sale updates stock, accounts, and reports in real time. No end-of-day manual entry, no reconciliation headaches."
+      }
+    ],
+    "stats": [
+      { "value": "50%", "label": "Less time on manual stocktaking" },
+      { "value": "0", "label": "Double-entry between POS and accounts" },
+      { "value": "Multi", "label": "Branch support on one account" }
+    ]
+  },
+  "ecommerce": {
+    "slug": "ecommerce",
+    "name": "Ecommerce",
+    "icon": "fa-cart-shopping",
+    "badge": "",
+    "tagline": "Orders, inventory, and fulfilment in sync",
+    "heroTitle": "Connect your online store to real-world operations",
+    "heroDesc": "Keep inventory, orders, and fulfilment perfectly in sync whether you sell on your website, a marketplace, or both. Zeebroo stops overselling and stock mismatch before they happen.",
+    "metaDesc": "Manage ecommerce inventory, orders, and fulfilment in one platform. Zeebroo prevents overselling and keeps your operations aligned.",
+    "challenge": "Selling online creates inventory gaps, fulfilment delays, and accounting confusion when tools do not talk to each other. Zeebroo closes the gap.",
+    "features": [
+      {
+        "icon": "fa-rotate",
+        "title": "Real-time inventory sync",
+        "desc": "Stock levels update the moment an order comes in - no overselling, no manual adjustments, no disappointed customers."
+      },
+      {
+        "icon": "fa-boxes-stacked",
+        "title": "Multi-channel order management",
+        "desc": "See all orders from every channel in one view. Pick, pack, and dispatch without jumping between platforms."
+      },
+      {
+        "icon": "fa-arrow-rotate-left",
+        "title": "Returns and refund tracking",
+        "desc": "Log returns, restock returned items, and record refunds in the same system. Keep your numbers clean without manual fixes."
+      },
+      {
+        "icon": "fa-truck",
+        "title": "Supplier restocking",
+        "desc": "When stock runs low, raise purchase orders directly from Zeebroo. Track supplier deliveries and bills in the same place."
+      },
+      {
+        "icon": "fa-building-columns",
+        "title": "Revenue and cost reconciliation",
+        "desc": "Every order, refund, and shipping cost flows into your accounts automatically. Month-end close without the spreadsheet marathon."
+      },
+      {
+        "icon": "fa-bullhorn",
+        "title": "Campaign and promotion tools",
+        "desc": "Run discount codes and promotions from the same platform you use to manage stock - so offers are always aligned with availability."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Connect your catalogue",
+        "desc": "Add your products, SKUs, and stock levels. Zeebroo tracks every unit across all your channels from day one."
+      },
+      {
+        "n": "02",
+        "title": "Process orders in one place",
+        "desc": "All incoming orders appear in a single queue. Fulfil, dispatch, and update stock without switching between systems."
+      },
+      {
+        "n": "03",
+        "title": "Watch revenue and stock stay in sync",
+        "desc": "Sales, returns, and supplier deliveries all update your accounts automatically. Clean books every day."
+      }
+    ],
+    "stats": [
+      { "value": "0", "label": "Overselling with real-time sync" },
+      { "value": "1", "label": "View for all channels and orders" },
+      { "value": "100%", "label": "Automated stock-to-accounts flow" }
+    ]
+  },
+  "manufacturing": {
+    "slug": "manufacturing",
+    "name": "Manufacturing",
+    "icon": "fa-industry",
+    "badge": "",
+    "tagline": "Production, materials, and dispatch",
+    "heroTitle": "Plan production, control materials, ship on time",
+    "heroDesc": "Zeebroo gives your production team full visibility on raw materials, work in progress, and finished goods - all connected to billing, supplier management, and dispatch.",
+    "metaDesc": "Manage production planning, raw materials, finished goods, and dispatch in one platform. Zeebroo keeps manufacturing operations clear and connected.",
+    "challenge": "Manufacturing involves complex material flows, strict costs, and tight delivery windows. Zeebroo ties procurement, production, and billing into one traceable system.",
+    "features": [
+      {
+        "icon": "fa-boxes-stacked",
+        "title": "Raw material stock control",
+        "desc": "Track every input material from receipt to production floor. Reorder alerts prevent production stoppages caused by stock-outs."
+      },
+      {
+        "icon": "fa-clipboard-list",
+        "title": "Production run planning",
+        "desc": "Plan and log production runs, allocate materials, and track output quantities. See what is being made and what is ready to ship."
+      },
+      {
+        "icon": "fa-list-check",
+        "title": "Bill of materials tracking",
+        "desc": "Define the components for each finished product. Zeebroo automatically deducts raw materials as production completes."
+      },
+      {
+        "icon": "fa-shield-halved",
+        "title": "Quality and compliance records",
+        "desc": "Log quality checks at each production stage. Keep the records your auditors and customers expect without paper forms."
+      },
+      {
+        "icon": "fa-truck",
+        "title": "Supplier and procurement management",
+        "desc": "Track purchase orders, supplier deliveries, and bills. Know what you ordered, what arrived, and what still needs paying."
+      },
+      {
+        "icon": "fa-file-invoice-dollar",
+        "title": "Customer billing and dispatch",
+        "desc": "Raise invoices as goods are dispatched, track payment status, and reconcile receivables without switching to a separate tool."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Define products and bill of materials",
+        "desc": "Set up finished goods and the raw materials needed to make them. Zeebroo tracks consumption automatically during each production run."
+      },
+      {
+        "n": "02",
+        "title": "Manage suppliers and materials",
+        "desc": "Raise purchase orders, receive deliveries, and pay supplier bills - all without leaving the platform."
+      },
+      {
+        "n": "03",
+        "title": "Dispatch and bill your customers",
+        "desc": "When goods are ready, raise invoices, record dispatch, and update accounts. Every step connected, no data re-entry needed."
+      }
+    ],
+    "stats": [
+      { "value": "100%", "label": "Material traceability from order to dispatch" },
+      { "value": "0", "label": "Manual updates between stock and accounts" },
+      { "value": "Full", "label": "Audit trail for compliance and quality" }
+    ]
+  },
+  "spare-parts": {
+    "slug": "spare-parts",
+    "name": "Spare Parts",
+    "icon": "fa-gears",
+    "badge": "",
+    "tagline": "Parts catalogue and fast checkout",
+    "heroTitle": "Find it fast. Sell it right. Never run short.",
+    "heroDesc": "Manage a complex parts catalogue, multiple suppliers, and fast-moving stock without losing track of what is on the shelf, what is on order, or who bought what.",
+    "metaDesc": "Manage a spare parts catalogue, stock levels, and supplier orders in one platform. Zeebroo helps spare parts businesses sell faster and restock smarter.",
+    "challenge": "Spare parts businesses handle thousands of SKUs, multiple suppliers, and customers who need the right part today. Zeebroo makes that manageable.",
+    "features": [
+      {
+        "icon": "fa-magnifying-glass",
+        "title": "Fast parts catalogue search",
+        "desc": "Find any part by name, code, or compatible model in seconds. Customers get an answer at the counter without staff digging through folders."
+      },
+      {
+        "icon": "fa-tags",
+        "title": "Multi-supplier pricing",
+        "desc": "Record the same part from multiple suppliers at different prices. Pick the best source when you reorder without comparing invoices manually."
+      },
+      {
+        "icon": "fa-bell",
+        "title": "Low-stock and reorder alerts",
+        "desc": "Set minimum stock levels per part. Zeebroo alerts you before fast-moving parts run out so you can reorder before customers are disappointed."
+      },
+      {
+        "icon": "fa-cash-register",
+        "title": "Quick counter checkout",
+        "desc": "Process parts sales fast at the counter with barcode scanning, cash and card payments, and printed receipts or invoices."
+      },
+      {
+        "icon": "fa-clock-rotate-left",
+        "title": "Customer order history",
+        "desc": "Look up any customer to see every part they have ever bought. Useful for warranty support, repeat orders, and building long-term relationships."
+      },
+      {
+        "icon": "fa-file-invoice-dollar",
+        "title": "Supplier bills and accounts",
+        "desc": "Track purchase orders, supplier invoices, and outstanding balances. Pay the right supplier the right amount without chasing paper records."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Build your parts catalogue",
+        "desc": "Import your parts list or add items one by one with codes, descriptions, prices, and supplier links. Search is instant from day one."
+      },
+      {
+        "n": "02",
+        "title": "Set reorder points and suppliers",
+        "desc": "Tell Zeebroo the minimum stock level for each part and which supplier to use. Alerts fire automatically when stock gets low."
+      },
+      {
+        "n": "03",
+        "title": "Sell, restock, and track accounts",
+        "desc": "Counter sales update stock in real time. Supplier bills and customer payments flow into your accounts automatically."
+      }
+    ],
+    "stats": [
+      { "value": "<5s", "label": "Average part lookup time at counter" },
+      { "value": "0", "label": "Stock-outs with reorder alerts active" },
+      { "value": "Full", "label": "Customer purchase history on record" }
+    ]
+  },
+  "wholesale-distribution": {
+    "slug": "wholesale-distribution",
+    "name": "Wholesale & Distribution",
+    "icon": "fa-truck-fast",
+    "badge": "",
+    "tagline": "Bulk orders and client accounts",
+    "heroTitle": "Bulk orders, happy clients, bills paid on time",
+    "heroDesc": "Handle large order volumes, multiple client accounts, and complex deliveries without spreadsheets or missed payments. Zeebroo keeps your wholesale operation running smoothly.",
+    "metaDesc": "Manage wholesale orders, client accounts, deliveries, and supplier bills in one platform. Zeebroo is built for distribution businesses.",
+    "challenge": "Wholesale operations deal with high volumes, credit accounts, and delivery logistics that outgrow simple tools quickly. Zeebroo is built to scale with you.",
+    "features": [
+      {
+        "icon": "fa-boxes-stacked",
+        "title": "Bulk order management",
+        "desc": "Process large orders efficiently with bulk pricing, quantity discounts, and order confirmation workflows that match how your clients expect to buy."
+      },
+      {
+        "icon": "fa-building-columns",
+        "title": "Client account ledgers",
+        "desc": "Each client gets a running account showing all orders, payments, and outstanding balances. Reconciliation takes minutes, not hours."
+      },
+      {
+        "icon": "fa-handshake",
+        "title": "Credit terms and limits",
+        "desc": "Set credit limits and payment terms per client. Zeebroo flags overdue accounts and unpaid invoices so nothing slips through."
+      },
+      {
+        "icon": "fa-truck-fast",
+        "title": "Delivery and route tracking",
+        "desc": "Assign deliveries to routes and drivers. Track what was dispatched, delivered, and returned - without paper delivery notes."
+      },
+      {
+        "icon": "fa-file-invoice-dollar",
+        "title": "Supplier bills and margin control",
+        "desc": "Track purchase costs and compare them to sale prices to protect margins on every order. Pay suppliers on time, always."
+      },
+      {
+        "icon": "fa-users",
+        "title": "Sales team and permissions",
+        "desc": "Give sales reps visibility into their own accounts and orders. Managers see everything. No one sees what they should not."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Set up clients and credit accounts",
+        "desc": "Add your clients, set payment terms, and open credit accounts. Zeebroo tracks every invoice and payment against each account."
+      },
+      {
+        "n": "02",
+        "title": "Process orders and schedule deliveries",
+        "desc": "Take orders from your reps. Assign to delivery routes and track dispatch status in real time."
+      },
+      {
+        "n": "03",
+        "title": "Collect payments and close accounts",
+        "desc": "Issue invoices, track payment status, and reconcile client accounts at the end of each period without manual ledger work."
+      }
+    ],
+    "stats": [
+      { "value": "100%", "label": "Client account visibility at a glance" },
+      { "value": "0", "label": "Missed invoices with automated billing" },
+      { "value": "Live", "label": "Margin tracking across all orders" }
+    ]
+  },
+  "non-profit": {
+    "slug": "non-profit",
+    "name": "Non-Profit",
+    "icon": "fa-heart",
+    "badge": "",
+    "tagline": "Donations, campaigns, volunteers",
+    "heroTitle": "Keep campaigns moving and records clean",
+    "heroDesc": "Manage donations, fundraising campaigns, volunteer records, and expenses from one platform your entire team can trust. Spend less time on admin and more on your mission.",
+    "metaDesc": "Manage non-profit donations, campaigns, volunteers, and accounts in one platform. Zeebroo helps non-profits stay organised and transparent.",
+    "challenge": "Non-profits face strict accountability requirements with limited admin capacity. Zeebroo gives clear records, transparent reporting, and simple day-to-day operations.",
+    "features": [
+      {
+        "icon": "fa-heart",
+        "title": "Donation tracking and records",
+        "desc": "Log every donation with donor details, amounts, and purpose. Generate clear records for compliance, auditing, and donor acknowledgement letters."
+      },
+      {
+        "icon": "fa-bullhorn",
+        "title": "Fundraising campaign management",
+        "desc": "Plan and track fundraising campaigns from launch to close. See how much each campaign raised, what was spent, and what the net result was."
+      },
+      {
+        "icon": "fa-people-group",
+        "title": "Volunteer and staff records",
+        "desc": "Keep HR records for both paid staff and volunteers. Track roles, availability, and hours contributed without a separate HR system."
+      },
+      {
+        "icon": "fa-receipt",
+        "title": "Expense and budget management",
+        "desc": "Track every expense against campaign or programme budgets. Approvals and records are clean and ready for your next audit."
+      },
+      {
+        "icon": "fa-chart-bar",
+        "title": "Donor and programme reporting",
+        "desc": "Produce clear reports for board members, donors, and grant bodies. Show exactly how funds were used with no manual data assembly."
+      },
+      {
+        "icon": "fa-building-columns",
+        "title": "Account and grant management",
+        "desc": "Track multiple funding sources, restricted grants, and general funds in separate ledgers. Spend the right money on the right programme."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Set up your organisation and funds",
+        "desc": "Add your programmes, campaigns, and funding sources. Separate restricted and unrestricted funds from the start."
+      },
+      {
+        "n": "02",
+        "title": "Log donations and track campaigns",
+        "desc": "Record incoming donations and link them to the right campaign. Expenses and income stay in balance automatically."
+      },
+      {
+        "n": "03",
+        "title": "Report with confidence",
+        "desc": "Generate clear financial statements for donors, boards, and grant bodies. Clean data ready when you need it."
+      }
+    ],
+    "stats": [
+      { "value": "100%", "label": "Transparent donor fund reporting" },
+      { "value": "0", "label": "Manual spreadsheet reconciliation" },
+      { "value": "Full", "label": "Audit trail for every transaction" }
+    ]
+  },
+  "pharmacy-healthcare": {
+    "slug": "pharmacy-healthcare",
+    "name": "Pharmacy & Healthcare",
+    "icon": "fa-pills",
+    "badge": "",
+    "tagline": "Medicine stock and compliance",
+    "heroTitle": "Stock medicines right. Bill patients fast. Stay compliant.",
+    "heroDesc": "From prescription stock control to patient billing and supplier reconciliation, Zeebroo keeps your pharmacy or healthcare practice running without gaps or compliance risks.",
+    "metaDesc": "Manage pharmacy stock, patient billing, prescriptions, and compliance in one platform. Zeebroo helps pharmacies and healthcare practices stay organised.",
+    "challenge": "Pharmacies deal with expiry-sensitive stock, compliance requirements, and fast-paced billing. Zeebroo handles the admin so your team can focus on patients.",
+    "features": [
+      {
+        "icon": "fa-pills",
+        "title": "Medicine stock control",
+        "desc": "Track every medicine by batch, supplier, and location. Reorder alerts and expiry warnings stop stockouts and waste before they happen."
+      },
+      {
+        "icon": "fa-calendar-xmark",
+        "title": "Expiry date management",
+        "desc": "Set expiry dates on all stock items. Zeebroo alerts you well in advance so you can sell or return stock before it expires."
+      },
+      {
+        "icon": "fa-file-medical",
+        "title": "Prescription and patient records",
+        "desc": "Link prescriptions to patient accounts and sales. Keep a clear record of what was dispensed, when, and to whom."
+      },
+      {
+        "icon": "fa-cash-register",
+        "title": "Fast patient billing",
+        "desc": "Process over-the-counter and prescription sales quickly at the counter. Print receipts, raise invoices, and track outstanding patient balances."
+      },
+      {
+        "icon": "fa-truck",
+        "title": "Supplier and distributor management",
+        "desc": "Track orders from pharmaceutical distributors, verify deliveries, and pay bills on time. Full supplier ledger, no paper chase."
+      },
+      {
+        "icon": "fa-shield-halved",
+        "title": "Compliance and audit records",
+        "desc": "Maintain the detailed stock movement and dispensing records your regulator expects. Ready for inspection at any time."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Set up your medicine catalogue",
+        "desc": "Add medicines with batch numbers, suppliers, expiry dates, and prices. Zeebroo tracks every unit from receipt to dispensing."
+      },
+      {
+        "n": "02",
+        "title": "Serve patients and process sales",
+        "desc": "Quick counter checkout for OTC and prescription items. Patient records and billing updated automatically with each transaction."
+      },
+      {
+        "n": "03",
+        "title": "Manage suppliers and compliance",
+        "desc": "Track deliveries, pay supplier bills, and maintain the audit records your practice needs - all in one place."
+      }
+    ],
+    "stats": [
+      { "value": "0", "label": "Expired stock with alert system active" },
+      { "value": "100%", "label": "Dispensing records maintained" },
+      { "value": "Fast", "label": "Patient checkout at the counter" }
+    ]
+  },
+  "hotel-hospitality": {
+    "slug": "hotel-hospitality",
+    "name": "Hotel & Hospitality",
+    "icon": "fa-hotel",
+    "badge": "",
+    "tagline": "Rooms, billing, and staff ops",
+    "heroTitle": "Guests happy. Operations smooth. Accounts clear.",
+    "heroDesc": "From front desk to housekeeping and food and beverage, Zeebroo keeps every department in sync so nothing falls through the cracks and every guest gets a clean experience.",
+    "metaDesc": "Manage hotel operations, guest billing, F&B stock, and staff in one platform. Zeebroo brings hospitality departments together.",
+    "challenge": "Hotels and guesthouses manage multiple revenue streams, large teams, and demanding guests all at once. Zeebroo connects every department in one clear system.",
+    "features": [
+      {
+        "icon": "fa-bed",
+        "title": "Booking and room billing",
+        "desc": "Log guest bookings, track room charges, and generate accurate folios at checkout. Every extra charge - F&B, laundry, minibar - recorded automatically."
+      },
+      {
+        "icon": "fa-utensils",
+        "title": "Food and beverage stock control",
+        "desc": "Track restaurant and bar inventory daily. Low-stock alerts before service ensure guests are never told a dish or drink is unavailable."
+      },
+      {
+        "icon": "fa-users",
+        "title": "Staff scheduling and HR",
+        "desc": "Manage rosters for front desk, housekeeping, kitchen, and maintenance. Track hours, manage payroll records, and keep HR organised."
+      },
+      {
+        "icon": "fa-truck",
+        "title": "Supplier and procurement",
+        "desc": "Order food, linens, and supplies from your vendor list. Track deliveries, verify bills, and pay suppliers without chasing invoices."
+      },
+      {
+        "icon": "fa-user-tag",
+        "title": "Guest accounts and loyalty",
+        "desc": "Maintain individual guest accounts with full stay and spend history. Reward returning guests with credit, discounts, or special rates."
+      },
+      {
+        "icon": "fa-chart-bar",
+        "title": "Revenue and occupancy reports",
+        "desc": "Daily revenue by department, occupancy rates, and outstanding bills - all in one report before the morning briefing starts."
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Set up rooms, departments, and staff",
+        "desc": "Add your room types, F&B menu, and team structure. Each department operates in its own view with the right data and permissions."
+      },
+      {
+        "n": "02",
+        "title": "Manage guests from check-in to checkout",
+        "desc": "Log bookings, post charges from every department, and produce accurate bills at checkout - in seconds, not minutes."
+      },
+      {
+        "n": "03",
+        "title": "Close each day with full visibility",
+        "desc": "Revenue summaries, stock levels, outstanding accounts, and staff hours - all ready for the nightly close without manual collation."
+      }
+    ],
+    "stats": [
+      { "value": "360°", "label": "View of every department in one dashboard" },
+      { "value": "0", "label": "Revenue leakage from missed charges" },
+      { "value": "Daily", "label": "Financial close without manual work" }
+    ]
+  }
+}
