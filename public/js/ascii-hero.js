@@ -1,5 +1,5 @@
 /**
- * ASCII corridor — same implementation as Modules/Theme/resources/views/layouts/auth.blade.php
+ * ASCII corridor - same implementation as Modules/Theme/resources/views/layouts/auth.blade.php
  * (canvas → <pre>, pointer-following box, corner lines, radial pulse).
  */
 (function () {

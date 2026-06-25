@@ -21,7 +21,68 @@
             </a>
             <ul class="nav-links">
                 <li><a href="/#benefits">Benefits</a></li>
-                <li><a href="/#solutions">Solutions</a></li>
+                <li class="has-mega">
+                    <button type="button" class="nav-mega-trigger" aria-expanded="false" aria-controls="navMegaSolutions">
+                        Solutions
+                        <svg class="nav-mega-caret" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="nav-mega" id="navMegaSolutions" role="region" aria-label="Solutions menu">
+                        <div class="nav-mega__inner">
+                            <div class="nav-mega__grid">
+                                <a href="/#solutions" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-boxes-stacked"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Stock management</span>
+                                        <span class="nav-mega__desc">Track products, batches, and reorder levels across all locations.</span>
+                                    </span>
+                                </a>
+                                <a href="/#pos" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-cash-register"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Point of sale</span>
+                                        <span class="nav-mega__desc">Fast browser checkout with cash, card, and receipt printing.</span>
+                                    </span>
+                                </a>
+                                <a href="/#solutions" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-users"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Human resources</span>
+                                        <span class="nav-mega__desc">Manage team roles, shifts, and HR workflows in one place.</span>
+                                    </span>
+                                </a>
+                                <a href="/#solutions" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-bullhorn"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Social campaigns</span>
+                                        <span class="nav-mega__desc">Plan and run promotions aligned with your stock and sales data.</span>
+                                    </span>
+                                </a>
+                                <a href="/#solutions" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-building-columns"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Account management</span>
+                                        <span class="nav-mega__desc">Track business accounts, branches, and balances with clarity.</span>
+                                    </span>
+                                </a>
+                                <a href="/#solutions" class="nav-mega__item">
+                                    <span class="nav-mega__icon" aria-hidden="true"><i class="fa fa-file-invoice-dollar"></i></span>
+                                    <span class="nav-mega__body">
+                                        <span class="nav-mega__title">Bill management</span>
+                                        <span class="nav-mega__desc">Create, track, and pay supplier bills and customer invoices.</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="nav-mega__footer">
+                                <a href="/#solutions" class="nav-mega__all">
+                                    View all solutions
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="/#pos">Point of sale</a></li>
                 <li><a href="/#why">Why Zeebroo</a></li>
                 <li><a href="/about" class="{{ navAbout }}">About</a></li>

@@ -26,8 +26,8 @@ class View {
         let body = renderView("views/home_content.html", ViewData());
         let scripts = "<script src=\"/js/hero-animations.js\" defer></script>\n    <script src=\"/js/ascii-hero.js\" defer></script>\n    <script src=\"/js/hero-video.js\" defer></script>";
         this.wrapPage(
-            "Zeebroo — Grow your business with one platform",
-            "Zeebroo helps you grow your business with stock, POS, accounts, bills, HR, social campaigns, and more — all in one simple platform.",
+            "Zeebroo - Grow your business with one platform",
+            "Zeebroo helps you grow your business with stock, POS, accounts, bills, HR, social campaigns, and more - all in one simple platform.",
             body,
             "",
             scripts
@@ -37,8 +37,8 @@ class View {
     method renderAbout() {
         let body = renderView("views/about_content.html", ViewData());
         this.wrapPage(
-            "About — Zeebroo",
-            "Learn about Zeebroo — the all-in-one platform for stock, POS, accounts, bills, HR, and marketing.",
+            "About - Zeebroo",
+            "Learn about Zeebroo - the all-in-one platform for stock, POS, accounts, bills, HR, and marketing.",
             body,
             "about",
             ""

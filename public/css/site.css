@@ -1,4 +1,4 @@
-/* Zeebroo marketing site — light theme: white, yellow, black */
+/* Zeebroo marketing site - light theme: white, yellow, black */
 
 :root {
     --white: #ffffff;
@@ -44,7 +44,7 @@ a { color: inherit; }
     margin-inline: auto;
 }
 
-/* Header — fixed to top of viewport */
+/* Header - fixed to top of viewport */
 .site-header {
     position: fixed;
     top: 0;
@@ -659,7 +659,7 @@ a { color: inherit; }
 .section--cream { background: var(--cream); }
 .section--white { background: var(--white); }
 
-/* Solutions — ASCII corridor (moved from hero) */
+/* Solutions - ASCII corridor (moved from hero) */
 .section--solutions {
     position: relative;
     overflow: hidden;
@@ -783,7 +783,7 @@ a { color: inherit; }
     font-size: 1.0625rem;
 }
 
-/* Benefits — split panel (image left, cards right) */
+/* Benefits - split panel (image left, cards right) */
 .benefits-split {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
@@ -1151,6 +1151,147 @@ a { color: inherit; }
     gap: 12px;
 }
 
+/* Mega menu */
+.has-mega {
+    position: static;
+}
+
+.nav-mega-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.nav-mega-trigger:hover,
+.has-mega.is-open .nav-mega-trigger {
+    color: var(--black);
+}
+
+.nav-mega-caret {
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.has-mega.is-open .nav-mega-caret {
+    transform: rotate(180deg);
+}
+
+.nav-mega {
+    position: fixed;
+    top: var(--header-h);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: min(760px, 92vw);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 1200;
+}
+
+.has-mega.is-open .nav-mega {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.nav-mega__inner {
+    padding: 20px;
+}
+
+.nav-mega__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.nav-mega__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+}
+
+.nav-mega__item:hover {
+    background: var(--cream);
+}
+
+.nav-mega__icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--yellow-muted);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--black);
+    transition: background 0.15s;
+}
+
+.nav-mega__item:hover .nav-mega__icon {
+    background: var(--yellow);
+}
+
+.nav-mega__body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.nav-mega__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.3;
+}
+
+.nav-mega__desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.nav-mega__footer {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-mega__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--black);
+    text-decoration: none;
+    transition: gap 0.15s ease;
+}
+
+.nav-mega__all:hover { gap: 10px; }
+
 /* Mobile */
 @media (max-width: 900px) {
     .nav-toggle { display: inline-flex; }
@@ -1186,6 +1327,31 @@ a { color: inherit; }
 
     .site-nav.is-open .nav-actions .btn-ghost { display: inline-flex; }
 
+    .nav-mega-trigger {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-mega {
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        width: 100%;
+        transform: translateY(10px);
+        border-radius: 0 0 16px 16px;
+        max-height: calc(100vh - var(--header-h) - 24px);
+        overflow-y: auto;
+    }
+
+    .has-mega.is-open .nav-mega {
+        transform: translateY(0);
+    }
+
+    .nav-mega__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .steps { grid-template-columns: 1fr; }
     .benefits-split {
         grid-template-columns: 1fr;
@@ -1207,6 +1373,7 @@ a { color: inherit; }
     .footer-grid { grid-template-columns: 1fr; }
     .hero__cta { flex-direction: column; align-items: stretch; }
     .hero__cta .btn { width: 100%; }
+    .nav-mega__grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
