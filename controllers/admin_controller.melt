@@ -1,0 +1,520 @@
+import "../config/db.melt";
+import "../config/admin.melt";
+
+class AdminController {
+
+    method esc(val) {
+        return replaceString(val + "", "'", "''");
+    }
+
+    method he(val) {
+        let s = replaceString(val + "", "&", "&amp;");
+        s = replaceString(s, "<", "&lt;");
+        s = replaceString(s, ">", "&gt;");
+        s = replaceString(s, "\"", "&quot;");
+        return s;
+    }
+
+    method getCookie(name) {
+        let raw = getRequestHeader("Cookie");
+        if (raw == "") { return ""; }
+        let parts = splitString(raw, ";");
+        let i = 0;
+        while (i < arrayLength(parts)) {
+            let part = arrayGet(parts, i);
+            let kv = splitString(part, "=");
+            if (arrayLength(kv) >= 2) {
+                let k = replaceString(arrayGet(kv, 0), " ", "");
+                if (k == name) { return arrayGet(kv, 1); }
+            }
+            i = i + 1;
+        }
+        return "";
+    }
+
+    method isLoggedIn() {
+        return this.getCookie(adminCfg.cookieName) == adminCfg.sessionToken;
+    }
+
+    method redirect(url) {
+        setResponseStatus(302);
+        setResponseHeader("Location", url);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody("");
+    }
+
+    method jsonOk() {
+        let o = objectCreate();
+        o.ok = true;
+        setResponseStatus(200);
+        setResponseContentType("application/json; charset=utf-8");
+        setResponseBody(jsonEncode(o));
+    }
+
+    method jsonErr(status, msg) {
+        let o = objectCreate();
+        o.ok = false;
+        o.error = msg;
+        setResponseStatus(status);
+        setResponseContentType("application/json; charset=utf-8");
+        setResponseBody(jsonEncode(o));
+    }
+
+    method postParam(body, name) {
+        let params = splitString(body, "&");
+        let i = 0;
+        while (i < arrayLength(params)) {
+            let kv = splitString(arrayGet(params, i), "=");
+            if (arrayLength(kv) >= 2) {
+                if (arrayGet(kv, 0) == name) {
+                    return replaceString(arrayGet(kv, 1), "+", " ");
+                }
+            }
+            i = i + 1;
+        }
+        return "";
+    }
+
+    method queryParam(path, name) {
+        let qp = splitString(path, "?");
+        if (arrayLength(qp) < 2) { return ""; }
+        let pairs = splitString(arrayGet(qp, 1), "&");
+        let i = 0;
+        while (i < arrayLength(pairs)) {
+            let kv = splitString(arrayGet(pairs, i), "=");
+            if (arrayLength(kv) >= 2 && arrayGet(kv, 0) == name) {
+                return arrayGet(kv, 1);
+            }
+            i = i + 1;
+        }
+        return "";
+    }
+
+    method field(obj, name, fallback) {
+        let raw = obj[name];
+        if (raw == false) { return fallback; }
+        let val = raw + "";
+        if (val == "" || val == "null") { return fallback; }
+        return val;
+    }
+
+    method notesFromArray(obj) {
+        let result = "";
+        try {
+            let arr = obj["notes"];
+            let n = arrayLength(arr);
+            let i = 0;
+            while (i < n) {
+                let line = arrayGet(arr, i) + "";
+                if (line != "" && line != "null") {
+                    if (result != "") { result = result + "|"; }
+                    result = result + line;
+                }
+                i = i + 1;
+            }
+        } catch (e) { result = ""; }
+        return result;
+    }
+
+    method semverDesc() {
+        return "CAST(SUBSTR(version,1,INSTR(version||'.','.') - 1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),1,INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')-1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')+1) AS INTEGER) DESC";
+    }
+
+    // Wraps content in the admin chrome
+    method page(title, body) {
+        let h = "<!DOCTYPE html><html lang=\"en\"><head>";
+        h = h + "<meta charset=\"utf-8\">";
+        h = h + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">";
+        h = h + "<title>" + title + " - Zeebroo Admin</title>";
+        h = h + "<link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap\" rel=\"stylesheet\">";
+        h = h + "<link rel=\"stylesheet\" href=\"/css/admin.css\">";
+        h = h + "</head><body>";
+        h = h + "<nav class=\"adm-nav\">";
+        h = h + "<a class=\"adm-brand\" href=\"/admin\"><span class=\"adm-brand__z\">Z</span> Admin</a>";
+        h = h + "<div class=\"adm-nav__links\">";
+        h = h + "<a href=\"/admin/releases\">Releases</a>";
+        h = h + "<a href=\"/\" target=\"_blank\">View Site &rarr;</a>";
+        h = h + "<a href=\"/admin/logout\" class=\"adm-nav__logout\">Logout</a>";
+        h = h + "</div></nav>";
+        h = h + "<main class=\"adm-main\">" + body + "</main>";
+        h = h + "</body></html>";
+        setResponseStatus(200);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(h);
+    }
+
+    // Standalone login page (no nav)
+    method loginPage(errorMsg) {
+        let errHtml = "";
+        if (errorMsg != "") {
+            errHtml = "<div class=\"adm-alert adm-alert--error\">" + this.he(errorMsg) + "</div>";
+        }
+        let h = "<!DOCTYPE html><html lang=\"en\"><head>";
+        h = h + "<meta charset=\"utf-8\">";
+        h = h + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">";
+        h = h + "<title>Admin Login - Zeebroo</title>";
+        h = h + "<link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap\" rel=\"stylesheet\">";
+        h = h + "<link rel=\"stylesheet\" href=\"/css/admin.css\">";
+        h = h + "</head><body class=\"adm-login-bg\">";
+        h = h + "<div class=\"adm-login\">";
+        h = h + "<div class=\"adm-login__mark\"><span>Z</span></div>";
+        h = h + "<h1 class=\"adm-login__title\">Zeebroo Admin</h1>";
+        h = h + "<p class=\"adm-login__sub\">Sign in to manage releases</p>";
+        h = h + errHtml;
+        h = h + "<form method=\"POST\" action=\"/admin/login\" class=\"adm-form\">";
+        h = h + "<div class=\"adm-field\"><label>Username</label><input type=\"text\" name=\"username\" autocomplete=\"username\" autofocus required></div>";
+        h = h + "<div class=\"adm-field\"><label>Password</label><input type=\"password\" name=\"password\" autocomplete=\"current-password\" required></div>";
+        h = h + "<button type=\"submit\" class=\"adm-btn adm-btn--primary adm-btn--full\">Sign in</button>";
+        h = h + "</form>";
+        h = h + "</div>";
+        h = h + "</body></html>";
+        setResponseStatus(200);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(h);
+    }
+
+    method login(path) {
+        if (getRequestMethod() == "POST") {
+            let b = getRequestBody();
+            let u = this.postParam(b, "username");
+            let p = this.postParam(b, "password");
+            if (u == adminCfg.username && p == adminCfg.password) {
+                setResponseHeader("Set-Cookie", adminCfg.cookieName + "=" + adminCfg.sessionToken + "; Path=/; HttpOnly; SameSite=Lax");
+                this.redirect("/admin");
+            } else {
+                this.loginPage("Invalid username or password.");
+            }
+        } else {
+            if (this.isLoggedIn()) {
+                this.redirect("/admin");
+            } else {
+                this.loginPage("");
+            }
+        }
+    }
+
+    method logout() {
+        setResponseHeader("Set-Cookie", adminCfg.cookieName + "=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
+        this.redirect("/admin/login");
+    }
+
+    method releases(path) {
+        let db = DB();
+        let rows = "";
+        let count = "0";
+
+        if (db.open()) {
+            if (sqliteQuery("SELECT id, version, release_date, channel, windows_url, macos_url, linux_url FROM releases ORDER BY " + this.semverDesc())) {
+                let data = sqliteFetchAll();
+                count = arrayLength(data) + "";
+                let ri = 0;
+                while (ri < arrayLength(data)) {
+                    let row = arrayGet(data, ri);
+                    let id      = arrayGet(row, 0);
+                    let ver     = arrayGet(row, 1);
+                    let date    = arrayGet(row, 2);
+                    let channel = arrayGet(row, 3);
+                    let hasWin  = arrayGet(row, 4) != "";
+                    let hasMac  = arrayGet(row, 5) != "";
+                    let hasLin  = arrayGet(row, 6) != "";
+
+                    let badge = "<span class=\"adm-badge adm-badge--stable\">stable</span>";
+                    if (channel == "beta") { badge = "<span class=\"adm-badge adm-badge--beta\">beta</span>"; }
+
+                    let dots = "";
+                    if (hasWin) { dots = dots + "<span class=\"adm-dot adm-dot--win\" title=\"Windows\">Win</span>"; }
+                    if (hasMac) { dots = dots + "<span class=\"adm-dot adm-dot--mac\" title=\"macOS\">Mac</span>"; }
+                    if (hasLin) { dots = dots + "<span class=\"adm-dot adm-dot--lin\" title=\"Linux\">Linux</span>"; }
+                    if (dots == "") { dots = "<span class=\"adm-dot adm-dot--none\">No URLs</span>"; }
+
+                    let latestTag = "";
+                    if (ri == 0) { latestTag = "<span class=\"adm-latest\">Latest</span>"; }
+
+                    rows = rows + "<tr>";
+                    rows = rows + "<td><span class=\"adm-ver\">v" + this.he(ver) + "</span>" + latestTag + "</td>";
+                    rows = rows + "<td>" + this.he(date) + "</td>";
+                    rows = rows + "<td>" + badge + "</td>";
+                    rows = rows + "<td><div class=\"adm-dots\">" + dots + "</div></td>";
+                    rows = rows + "<td><div class=\"adm-actions\">";
+                    rows = rows + "<a href=\"/admin/releases/edit?id=" + id + "\" class=\"adm-btn adm-btn--sm\">Edit</a> ";
+                    rows = rows + "<button type=\"button\" onclick=\"confirmDelete(" + id + ",'v" + this.he(ver) + "')\" class=\"adm-btn adm-btn--sm adm-btn--danger\">Delete</button>";
+                    rows = rows + "</div></td>";
+                    rows = rows + "</tr>";
+                    ri = ri + 1;
+                }
+            }
+            db.close();
+        }
+
+        let emptyMsg = "";
+        if (count == "0") {
+            emptyMsg = "<tr><td colspan=\"5\" class=\"adm-empty\">No releases yet. <a href=\"/admin/releases/new\">Create the first one.</a></td></tr>";
+        }
+
+        let body = "";
+        body = body + "<div class=\"adm-page-hdr\">";
+        body = body + "<div><h1>Releases</h1><p class=\"adm-sub\">" + count + " total</p></div>";
+        body = body + "<a href=\"/admin/releases/new\" class=\"adm-btn adm-btn--primary\">+ New Release</a>";
+        body = body + "</div>";
+        body = body + "<div class=\"adm-card\">";
+        body = body + "<table class=\"adm-table\">";
+        body = body + "<thead><tr><th>Version</th><th>Release Date</th><th>Channel</th><th>Platforms</th><th>Actions</th></tr></thead>";
+        body = body + "<tbody>" + rows + emptyMsg + "</tbody>";
+        body = body + "</table></div>";
+
+        // Delete modal
+        body = body + "<div class=\"adm-overlay\" id=\"delOverlay\" onclick=\"closeModal()\"></div>";
+        body = body + "<div class=\"adm-modal\" id=\"delModal\">";
+        body = body + "<h2>Delete release?</h2>";
+        body = body + "<p id=\"delMsg\" class=\"adm-modal__msg\"></p>";
+        body = body + "<div class=\"adm-modal__btns\">";
+        body = body + "<button onclick=\"closeModal()\" class=\"adm-btn\">Cancel</button>";
+        body = body + "<form id=\"delForm\" method=\"POST\" action=\"/admin/releases/delete\" style=\"display:inline\">";
+        body = body + "<input type=\"hidden\" name=\"id\" id=\"delId\">";
+        body = body + "<button type=\"submit\" class=\"adm-btn adm-btn--danger\">Yes, delete</button>";
+        body = body + "</form></div></div>";
+
+        body = body + "<script>";
+        body = body + "function confirmDelete(id,ver){";
+        body = body + "document.getElementById('delId').value=id;";
+        body = body + "document.getElementById('delMsg').textContent='Permanently delete '+ver+'? This cannot be undone.';";
+        body = body + "document.getElementById('delOverlay').style.display='block';";
+        body = body + "document.getElementById('delModal').style.display='block';}";
+        body = body + "function closeModal(){";
+        body = body + "document.getElementById('delOverlay').style.display='none';";
+        body = body + "document.getElementById('delModal').style.display='none';}";
+        body = body + "</script>";
+
+        this.page("Releases", body);
+    }
+
+    method renderForm(isEdit, id, version, date, channel, notesRaw, winUrl, macUrl, linUrl) {
+        let notesDisplay = replaceString(notesRaw, "|", "\n");
+        let idField = "";
+        if (isEdit) {
+            idField = "<input type=\"hidden\" id=\"releaseId\" value=\"" + this.he(id) + "\">";
+        }
+        let selStable = "selected";
+        let selBeta = "";
+        if (channel == "beta") { selStable = ""; selBeta = "selected"; }
+
+        let titleText = "New Release";
+        if (isEdit) { titleText = "Edit Release"; }
+
+        let body = "";
+        body = body + "<div class=\"adm-page-hdr\">";
+        body = body + "<div><h1>" + titleText + "</h1></div>";
+        body = body + "<a href=\"/admin/releases\" class=\"adm-btn\">&larr; Back</a>";
+        body = body + "</div>";
+        body = body + "<div class=\"adm-card adm-card--form\">";
+        body = body + "<form id=\"rForm\">";
+        body = body + idField;
+
+        body = body + "<div class=\"adm-form-row\">";
+        body = body + "<div class=\"adm-field\"><label>Version <span class=\"adm-req\">*</span></label>";
+        body = body + "<input type=\"text\" id=\"fVersion\" placeholder=\"1.0.0\" value=\"" + this.he(version) + "\" required></div>";
+        body = body + "<div class=\"adm-field\"><label>Release Date <span class=\"adm-req\">*</span></label>";
+        body = body + "<input type=\"date\" id=\"fDate\" value=\"" + this.he(date) + "\" required></div>";
+        body = body + "<div class=\"adm-field\"><label>Channel</label>";
+        body = body + "<select id=\"fChannel\"><option value=\"stable\" " + selStable + ">Stable</option><option value=\"beta\" " + selBeta + ">Beta</option></select></div>";
+        body = body + "</div>";
+
+        body = body + "<div class=\"adm-field\"><label>Release Notes <small>one per line</small></label>";
+        body = body + "<textarea id=\"fNotes\" rows=\"5\" placeholder=\"Fixed login bug&#10;Added export feature\">" + this.he(notesDisplay) + "</textarea></div>";
+
+        body = body + "<div class=\"adm-section-label\">Download URLs</div>";
+        body = body + "<div class=\"adm-field\"><label>Windows URL</label>";
+        body = body + "<input type=\"url\" id=\"fWin\" placeholder=\"https://\" value=\"" + this.he(winUrl) + "\"></div>";
+        body = body + "<div class=\"adm-field\"><label>macOS URL</label>";
+        body = body + "<input type=\"url\" id=\"fMac\" placeholder=\"https://\" value=\"" + this.he(macUrl) + "\"></div>";
+        body = body + "<div class=\"adm-field\"><label>Linux URL</label>";
+        body = body + "<input type=\"url\" id=\"fLin\" placeholder=\"https://\" value=\"" + this.he(linUrl) + "\"></div>";
+
+        body = body + "<div class=\"adm-form-footer\">";
+        body = body + "<div id=\"fMsg\" class=\"adm-alert\" style=\"display:none\"></div>";
+        body = body + "<button type=\"submit\" id=\"fBtn\" class=\"adm-btn adm-btn--primary\">Save Release</button>";
+        body = body + "</div>";
+        body = body + "</form></div>";
+
+        body = body + "<script>";
+        body = body + "document.getElementById('rForm').addEventListener('submit',async function(e){";
+        body = body + "e.preventDefault();";
+        body = body + "var btn=document.getElementById('fBtn');";
+        body = body + "var msg=document.getElementById('fMsg');";
+        body = body + "btn.disabled=true;btn.textContent='Saving...';";
+        body = body + "var idEl=document.getElementById('releaseId');";
+        body = body + "var notesArr=document.getElementById('fNotes').value.split('\\n').map(function(l){return l.trim();}).filter(function(l){return l!=='';});";
+        body = body + "var data={";
+        body = body + "version:document.getElementById('fVersion').value.trim(),";
+        body = body + "release_date:document.getElementById('fDate').value,";
+        body = body + "channel:document.getElementById('fChannel').value,";
+        body = body + "notes:notesArr,";
+        body = body + "windows_url:document.getElementById('fWin').value.trim(),";
+        body = body + "macos_url:document.getElementById('fMac').value.trim(),";
+        body = body + "linux_url:document.getElementById('fLin').value.trim()";
+        body = body + "};";
+        body = body + "var endpoint='/admin/releases/create';";
+        body = body + "if(idEl){data.id=idEl.value;endpoint='/admin/releases/update';}";
+        body = body + "try{";
+        body = body + "var r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});";
+        body = body + "var j=await r.json();";
+        body = body + "if(j.ok){window.location.href='/admin/releases';}";
+        body = body + "else{msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent=j.error||'Save failed.';btn.disabled=false;btn.textContent='Save Release';}";
+        body = body + "}catch(err){msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent='Network error. Try again.';btn.disabled=false;btn.textContent='Save Release';}";
+        body = body + "});";
+        body = body + "</script>";
+
+        return body;
+    }
+
+    method releaseNew(path) {
+        let body = this.renderForm(false, "", "", "", "stable", "", "", "", "");
+        this.page("New Release", body);
+    }
+
+    method releaseEdit(path) {
+        let id = this.queryParam(path, "id");
+        if (id == "") { this.redirect("/admin/releases"); return; }
+
+        let db = DB();
+        let found = false;
+        let ver = ""; let date = ""; let channel = ""; let notes = "";
+        let winUrl = ""; let macUrl = ""; let linUrl = "";
+
+        if (db.open()) {
+            if (sqliteQuery("SELECT id, version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases WHERE id = " + this.esc(id) + " LIMIT 1")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) > 0) {
+                    let row = arrayGet(rows, 0);
+                    found   = true;
+                    id      = arrayGet(row, 0);
+                    ver     = arrayGet(row, 1);
+                    date    = arrayGet(row, 2);
+                    channel = arrayGet(row, 3);
+                    notes   = arrayGet(row, 4);
+                    winUrl  = arrayGet(row, 5);
+                    macUrl  = arrayGet(row, 6);
+                    linUrl  = arrayGet(row, 7);
+                }
+            }
+            db.close();
+        }
+
+        if (!found) { this.redirect("/admin/releases"); return; }
+
+        let body = this.renderForm(true, id, ver, date, channel, notes, winUrl, macUrl, linUrl);
+        this.page("Edit Release", body);
+    }
+
+    method releaseCreate(path) {
+        if (!this.isLoggedIn()) { this.jsonErr(401, "Unauthorized"); return; }
+        if (getRequestMethod() != "POST") { this.jsonErr(405, "POST required"); return; }
+
+        let data    = jsonDecode(getRequestBody());
+        let version = this.field(data, "version", "");
+        let date    = this.field(data, "release_date", "");
+        if (version == "") { this.jsonErr(400, "Version is required"); return; }
+        if (date == "") { this.jsonErr(400, "Release date is required"); return; }
+
+        let channel = this.field(data, "channel", "stable");
+        let winUrl  = this.field(data, "windows_url", "");
+        let macUrl  = this.field(data, "macos_url", "");
+        let linUrl  = this.field(data, "linux_url", "");
+        let notes   = this.notesFromArray(data);
+        if (notes == "") { notes = this.field(data, "notes", ""); }
+
+        let db = DB();
+        if (!db.open()) { this.jsonErr(500, "Database unavailable"); return; }
+
+        let sql = "INSERT OR REPLACE INTO releases (version, release_date, channel, notes, windows_url, macos_url, linux_url) VALUES ('" +
+            this.esc(version) + "','" + this.esc(date) + "','" + this.esc(channel) + "','" +
+            this.esc(notes) + "','" + this.esc(winUrl) + "','" + this.esc(macUrl) + "','" + this.esc(linUrl) + "')";
+
+        let ok = sqliteExec(sql);
+        db.close();
+
+        if (!ok) { this.jsonErr(500, "Failed to save release"); return; }
+        this.jsonOk();
+    }
+
+    method releaseUpdate(path) {
+        if (!this.isLoggedIn()) { this.jsonErr(401, "Unauthorized"); return; }
+        if (getRequestMethod() != "POST") { this.jsonErr(405, "POST required"); return; }
+
+        let data    = jsonDecode(getRequestBody());
+        let id      = this.field(data, "id", "");
+        let version = this.field(data, "version", "");
+        let date    = this.field(data, "release_date", "");
+        if (id == "")      { this.jsonErr(400, "ID is required"); return; }
+        if (version == "") { this.jsonErr(400, "Version is required"); return; }
+        if (date == "")    { this.jsonErr(400, "Release date is required"); return; }
+
+        let channel = this.field(data, "channel", "stable");
+        let winUrl  = this.field(data, "windows_url", "");
+        let macUrl  = this.field(data, "macos_url", "");
+        let linUrl  = this.field(data, "linux_url", "");
+        let notes   = this.notesFromArray(data);
+        if (notes == "") { notes = this.field(data, "notes", ""); }
+
+        let db = DB();
+        if (!db.open()) { this.jsonErr(500, "Database unavailable"); return; }
+
+        let sql = "UPDATE releases SET version='" + this.esc(version) + "', release_date='" + this.esc(date) +
+            "', channel='" + this.esc(channel) + "', notes='" + this.esc(notes) +
+            "', windows_url='" + this.esc(winUrl) + "', macos_url='" + this.esc(macUrl) +
+            "', linux_url='" + this.esc(linUrl) + "' WHERE id=" + this.esc(id);
+
+        let ok = sqliteExec(sql);
+        db.close();
+
+        if (!ok) { this.jsonErr(500, "Failed to update release"); return; }
+        this.jsonOk();
+    }
+
+    method releaseDelete(path) {
+        if (getRequestMethod() != "POST") { this.redirect("/admin/releases"); return; }
+        let id = this.postParam(getRequestBody(), "id");
+        if (id == "") { this.redirect("/admin/releases"); return; }
+
+        let db = DB();
+        if (db.open()) {
+            sqliteExec("DELETE FROM releases WHERE id=" + this.esc(id));
+            db.close();
+        }
+        this.redirect("/admin/releases");
+    }
+
+    method dispatch(path) {
+        let pathParts = splitString(path, "?");
+        let cleanPath = arrayGet(pathParts, 0);
+
+        if (cleanPath == "/admin/login") {
+            this.login(path);
+            return;
+        }
+        if (cleanPath == "/admin/logout") {
+            this.logout();
+            return;
+        }
+        if (!this.isLoggedIn()) {
+            this.redirect("/admin/login");
+            return;
+        }
+
+        if (cleanPath == "/admin" || cleanPath == "/admin/releases") {
+            this.releases(path);
+        } else if (cleanPath == "/admin/releases/new") {
+            this.releaseNew(path);
+        } else if (cleanPath == "/admin/releases/edit") {
+            this.releaseEdit(path);
+        } else if (cleanPath == "/admin/releases/create") {
+            this.releaseCreate(path);
+        } else if (cleanPath == "/admin/releases/update") {
+            this.releaseUpdate(path);
+        } else if (cleanPath == "/admin/releases/delete") {
+            this.releaseDelete(path);
+        } else {
+            this.redirect("/admin/releases");
+        }
+    }
+}

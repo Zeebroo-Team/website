@@ -1,0 +1,9 @@
+class AdminConfig {
+    method init() {
+        this.username    = "admin";
+        this.password    = "zeebroo_admin_change_me";
+        this.cookieName  = "zbr_adm";
+        this.sessionToken = "zbr_adm_sess_CHANGEME_replace_with_random_string";
+    }
+}
+let adminCfg = AdminConfig();
