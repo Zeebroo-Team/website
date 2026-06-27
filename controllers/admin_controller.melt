@@ -173,7 +173,15 @@ class AdminController {
         h = h + "<a href=\"/admin/logout\" class=\"adm-sidebar__link adm-sidebar__link--danger\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M10 11l3-3-3-3M13 8H6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> Logout</a>";
         h = h + "</div>";
         h = h + "</aside>";
+        h = h + "<div class=\"adm-layout\">";
+        h = h + "<header class=\"adm-topbar\">";
+        h = h + "<h2 class=\"adm-topbar__title\">" + title + "</h2>";
+        h = h + "<div class=\"adm-topbar__right\">";
+        h = h + "<a href=\"/admin/releases/new\" class=\"adm-btn adm-btn--primary adm-btn--sm\">+ New Release</a>";
+        h = h + "</div>";
+        h = h + "</header>";
         h = h + "<main class=\"adm-main\">" + body + "</main>";
+        h = h + "</div>";
         h = h + "</body></html>";
         setResponseStatus(200);
         setResponseContentType("text/html; charset=utf-8");

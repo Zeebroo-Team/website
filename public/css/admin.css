@@ -136,12 +136,48 @@ body {
     gap: 2px;
 }
 
-/* ── Main ────────────────────────────────────────────────────────── */
-.adm-main {
+/* ── Layout wrapper (topbar + main, sits right of sidebar) ───────── */
+.adm-layout {
     margin-left: var(--adm-sidebar-w);
     flex: 1;
-    padding: 32px 32px 48px;
-    max-width: calc(100vw - var(--adm-sidebar-w));
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 0;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────────── */
+.adm-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background: var(--adm-white);
+    border-bottom: 1px solid var(--adm-border);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    gap: 16px;
+}
+
+.adm-topbar__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--adm-navy);
+    letter-spacing: -0.01em;
+}
+
+.adm-topbar__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Main ────────────────────────────────────────────────────────── */
+.adm-main {
+    flex: 1;
+    padding: 28px 28px 48px;
 }
 
 .adm-main > * { max-width: 900px; }
@@ -492,7 +528,8 @@ body {
         flex: 1;
     }
 
-    .adm-main { margin-left: 0; padding: 20px 16px 40px; max-width: 100vw; }
+    .adm-layout { margin-left: 0; }
+    .adm-main { padding: 20px 16px 40px; }
     .adm-form-row { grid-template-columns: 1fr; }
     .adm-card--form { padding: 20px 16px; }
 
