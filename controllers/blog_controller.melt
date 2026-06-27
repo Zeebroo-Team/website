@@ -1,0 +1,117 @@
+import "../views/layout.melt";
+import "../config/db.melt";
+
+class BlogController {
+
+    method he(val) {
+        let s = replaceString(val + "", "&", "&amp;");
+        s = replaceString(s, "<", "&lt;");
+        s = replaceString(s, ">", "&gt;");
+        return s;
+    }
+
+    method formatDate(raw) {
+        if (raw == "") { return ""; }
+        let parts = splitString(raw, "-");
+        if (arrayLength(parts) < 3) { return raw; }
+        let y = arrayGet(parts, 0);
+        let m = arrayGet(parts, 1);
+        let d = arrayGet(parts, 2);
+        let months = splitString("Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec", "|");
+        let mi = 0;
+        try { mi = 0; } catch (e) { mi = 0; }
+        if (m == "01") { mi = 0; } else if (m == "02") { mi = 1; } else if (m == "03") { mi = 2; }
+        else if (m == "04") { mi = 3; } else if (m == "05") { mi = 4; } else if (m == "06") { mi = 5; }
+        else if (m == "07") { mi = 6; } else if (m == "08") { mi = 7; } else if (m == "09") { mi = 8; }
+        else if (m == "10") { mi = 9; } else if (m == "11") { mi = 10; } else if (m == "12") { mi = 11; }
+        return d + " " + arrayGet(months, mi) + " " + y;
+    }
+
+    method index() {
+        let db = DB();
+        let postsHtml = "";
+
+        if (db.open()) {
+            db.ensurePosts();
+            if (sqliteQuery("SELECT title, slug, excerpt, published_at FROM posts WHERE status='published' ORDER BY published_at DESC")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) == 0) {
+                    postsHtml = "<div class=\"blog-empty\"><p>No posts yet. Check back soon.</p></div>";
+                } else {
+                    postsHtml = "<div class=\"blog-grid\">";
+                    let i = 0;
+                    while (i < arrayLength(rows)) {
+                        let row     = arrayGet(rows, i);
+                        let title   = arrayGet(row, 0);
+                        let slug    = arrayGet(row, 1);
+                        let excerpt = arrayGet(row, 2);
+                        let date    = this.formatDate(arrayGet(row, 3));
+
+                        postsHtml = postsHtml + "<a href=\"/blog/" + slug + "\" class=\"blog-card\">";
+                        postsHtml = postsHtml + "<div class=\"blog-card__body\">";
+                        postsHtml = postsHtml + "<p class=\"blog-card__date\">" + this.he(date) + "</p>";
+                        postsHtml = postsHtml + "<h2 class=\"blog-card__title\">" + this.he(title) + "</h2>";
+                        postsHtml = postsHtml + "<p class=\"blog-card__excerpt\">" + this.he(excerpt) + "</p>";
+                        postsHtml = postsHtml + "</div>";
+                        postsHtml = postsHtml + "<span class=\"blog-card__read\">Read more <i class=\"fa fa-arrow-right\" aria-hidden=\"true\"></i></span>";
+                        postsHtml = postsHtml + "</a>";
+                        i = i + 1;
+                    }
+                    postsHtml = postsHtml + "</div>";
+                }
+            }
+            db.close();
+        }
+
+        let data = ViewData();
+        data.blogPostsHtml = postsHtml;
+
+        let view = View();
+        view.renderBlogList(data);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(view.output);
+        setResponseStatus(200);
+    }
+
+    method show(slug) {
+        let db = DB();
+        let found = false;
+        let title = ""; let excerpt = ""; let content = ""; let date = "";
+
+        if (db.open()) {
+            db.ensurePosts();
+            let esc = replaceString(slug, "'", "''");
+            if (sqliteQuery("SELECT title, excerpt, content, published_at FROM posts WHERE slug='" + esc + "' AND status='published' LIMIT 1")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) > 0) {
+                    let row = arrayGet(rows, 0);
+                    found   = true;
+                    title   = arrayGet(row, 0);
+                    excerpt = arrayGet(row, 1);
+                    content = arrayGet(row, 2);
+                    date    = this.formatDate(arrayGet(row, 3));
+                }
+            }
+            db.close();
+        }
+
+        if (!found) {
+            setResponseStatus(404);
+            setResponseContentType("text/html; charset=utf-8");
+            setResponseBody("<html><body><h1>Post not found</h1><a href=\"/blog\">Back to blog</a></body></html>");
+            return;
+        }
+
+        let data = ViewData();
+        data.postTitle   = title;
+        data.postExcerpt = excerpt;
+        data.postContent = content;
+        data.postDate    = date;
+
+        let view = View();
+        view.renderBlogPost(data);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(view.output);
+        setResponseStatus(200);
+    }
+}

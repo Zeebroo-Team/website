@@ -165,6 +165,7 @@ class AdminController {
         h = h + "<nav class=\"adm-sidebar__nav\">";
         h = h + "<p class=\"adm-sidebar__section\">Manage</p>";
         h = h + "<a href=\"/admin/releases\" class=\"adm-sidebar__link\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M2 4h12M2 8h8M2 12h10\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg> Releases</a>";
+        h = h + "<a href=\"/admin/blog\" class=\"adm-sidebar__link\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M5 6h6M5 9h4\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg> Blog</a>";
         h = h + "<p class=\"adm-sidebar__section\">Account</p>";
         h = h + "<a href=\"/admin/settings\" class=\"adm-sidebar__link\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><circle cx=\"8\" cy=\"8\" r=\"2.5\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg> Settings</a>";
         h = h + "</nav>";
@@ -531,6 +532,264 @@ class AdminController {
         this.redirect("/admin/releases");
     }
 
+    // ── Blog admin ────────────────────────────────────────────────── //
+
+    method blogList(path) {
+        let db = DB();
+        let rows = "";
+        let count = "0";
+
+        if (db.open()) {
+            db.ensurePosts();
+            if (sqliteQuery("SELECT id, title, slug, status, published_at FROM posts ORDER BY id DESC")) {
+                let data = sqliteFetchAll();
+                count = arrayLength(data) + "";
+                let ri = 0;
+                while (ri < arrayLength(data)) {
+                    let row    = arrayGet(data, ri);
+                    let id     = arrayGet(row, 0);
+                    let title  = arrayGet(row, 1);
+                    let slug   = arrayGet(row, 2);
+                    let status = arrayGet(row, 3);
+                    let pubAt  = arrayGet(row, 4);
+
+                    let badge = "<span class=\"adm-badge adm-badge--draft\">draft</span>";
+                    if (status == "published") { badge = "<span class=\"adm-badge adm-badge--stable\">published</span>"; }
+
+                    rows = rows + "<tr>";
+                    rows = rows + "<td><span class=\"adm-post-title\">" + this.he(title) + "</span></td>";
+                    rows = rows + "<td><code class=\"adm-slug\">" + this.he(slug) + "</code></td>";
+                    rows = rows + "<td>" + badge + "</td>";
+                    rows = rows + "<td>" + this.he(pubAt) + "</td>";
+                    rows = rows + "<td><div class=\"adm-actions\">";
+                    rows = rows + "<a href=\"/blog/" + this.he(slug) + "\" target=\"_blank\" class=\"adm-btn adm-btn--sm\">View</a> ";
+                    rows = rows + "<a href=\"/admin/blog/edit?id=" + id + "\" class=\"adm-btn adm-btn--sm\">Edit</a> ";
+                    rows = rows + "<button type=\"button\" onclick=\"confirmDeletePost(" + id + ",'" + this.he(title) + "')\" class=\"adm-btn adm-btn--sm adm-btn--danger\">Delete</button>";
+                    rows = rows + "</div></td>";
+                    rows = rows + "</tr>";
+                    ri = ri + 1;
+                }
+            }
+            db.close();
+        }
+
+        let emptyMsg = "";
+        if (count == "0") {
+            emptyMsg = "<tr><td colspan=\"5\" class=\"adm-empty\">No posts yet. <a href=\"/admin/blog/new\">Write the first one.</a></td></tr>";
+        }
+
+        let body = "";
+        body = body + "<div class=\"adm-page-hdr\"><div><h1>Blog</h1><p class=\"adm-sub\">" + count + " posts</p></div>";
+        body = body + "<a href=\"/admin/blog/new\" class=\"adm-btn adm-btn--primary\">+ New Post</a></div>";
+        body = body + "<div class=\"adm-card\">";
+        body = body + "<table class=\"adm-table\">";
+        body = body + "<thead><tr><th>Title</th><th>Slug</th><th>Status</th><th>Published</th><th>Actions</th></tr></thead>";
+        body = body + "<tbody>" + rows + emptyMsg + "</tbody>";
+        body = body + "</table></div>";
+
+        body = body + "<div class=\"adm-overlay\" id=\"delPostOverlay\" onclick=\"closePostModal()\"></div>";
+        body = body + "<div class=\"adm-modal\" id=\"delPostModal\">";
+        body = body + "<h2>Delete post?</h2><p id=\"delPostMsg\" class=\"adm-modal__msg\"></p>";
+        body = body + "<div class=\"adm-modal__btns\"><button onclick=\"closePostModal()\" class=\"adm-btn\">Cancel</button>";
+        body = body + "<form id=\"delPostForm\" method=\"POST\" action=\"/admin/blog/delete\" style=\"display:inline\">";
+        body = body + "<input type=\"hidden\" name=\"id\" id=\"delPostId\">";
+        body = body + "<button type=\"submit\" class=\"adm-btn adm-btn--danger\">Yes, delete</button>";
+        body = body + "</form></div></div>";
+
+        body = body + "<script>";
+        body = body + "function confirmDeletePost(id,title){";
+        body = body + "document.getElementById('delPostId').value=id;";
+        body = body + "document.getElementById('delPostMsg').textContent='Permanently delete \"'+title+'\"? This cannot be undone.';";
+        body = body + "document.getElementById('delPostOverlay').style.display='block';";
+        body = body + "document.getElementById('delPostModal').style.display='block';}";
+        body = body + "function closePostModal(){";
+        body = body + "document.getElementById('delPostOverlay').style.display='none';";
+        body = body + "document.getElementById('delPostModal').style.display='none';}";
+        body = body + "</script>";
+
+        this.page("Blog", body);
+    }
+
+    method blogForm(isEdit, id, title, slug, excerpt, content, status, pubAt) {
+        let selDraft = "selected"; let selPub = "";
+        if (status == "published") { selDraft = ""; selPub = "selected"; }
+        let idField = "";
+        if (isEdit) { idField = "<input type=\"hidden\" id=\"postId\" value=\"" + this.he(id) + "\">"; }
+        let titleText = "New Post";
+        if (isEdit) { titleText = "Edit Post"; }
+
+        let body = "";
+        body = body + "<div class=\"adm-page-hdr\"><div><h1>" + titleText + "</h1></div><a href=\"/admin/blog\" class=\"adm-btn\">&larr; Back</a></div>";
+        body = body + "<div class=\"adm-card adm-card--form\"><form id=\"pForm\" class=\"adm-form\">";
+        body = body + idField;
+        body = body + "<div class=\"adm-form-row\">";
+        body = body + "<div class=\"adm-field\" style=\"grid-column:span 2\"><label>Title <span class=\"adm-req\">*</span></label>";
+        body = body + "<input type=\"text\" id=\"pTitle\" value=\"" + this.he(title) + "\" placeholder=\"My awesome post\" required></div>";
+        body = body + "<div class=\"adm-field\"><label>Status</label>";
+        body = body + "<select id=\"pStatus\"><option value=\"draft\" " + selDraft + ">Draft</option><option value=\"published\" " + selPub + ">Published</option></select></div>";
+        body = body + "</div>";
+        body = body + "<div class=\"adm-field\"><label>Slug <span class=\"adm-req\">*</span> <small>URL: /blog/your-slug</small></label>";
+        body = body + "<input type=\"text\" id=\"pSlug\" value=\"" + this.he(slug) + "\" placeholder=\"my-awesome-post\" required></div>";
+        body = body + "<div class=\"adm-field\"><label>Excerpt <small>short description shown in listing</small></label>";
+        body = body + "<textarea id=\"pExcerpt\" rows=\"2\" placeholder=\"A short summary...\">" + this.he(excerpt) + "</textarea></div>";
+        body = body + "<div class=\"adm-field\"><label>Content <small>HTML supported</small></label>";
+        body = body + "<textarea id=\"pContent\" rows=\"18\" placeholder=\"&lt;p&gt;Write your post here...&lt;/p&gt;\" class=\"adm-content-editor\">" + this.he(content) + "</textarea></div>";
+        body = body + "<div class=\"adm-form-footer\">";
+        body = body + "<div id=\"pMsg\" class=\"adm-alert\" style=\"display:none\"></div>";
+        body = body + "<button type=\"submit\" id=\"pBtn\" class=\"adm-btn adm-btn--primary\">Save Post</button>";
+        body = body + "</div></form></div>";
+
+        body = body + "<script>";
+        body = body + "var titleEl=document.getElementById('pTitle');";
+        body = body + "var slugEl=document.getElementById('pSlug');";
+        body = body + "function toSlug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}";
+        body = body + "titleEl.addEventListener('input',function(){if(!slugEl.dataset.manual){slugEl.value=toSlug(titleEl.value);}});";
+        body = body + "slugEl.addEventListener('input',function(){slugEl.dataset.manual='1';});";
+        body = body + "document.getElementById('pForm').addEventListener('submit',async function(e){";
+        body = body + "e.preventDefault();";
+        body = body + "var btn=document.getElementById('pBtn');var msg=document.getElementById('pMsg');";
+        body = body + "btn.disabled=true;btn.textContent='Saving...';";
+        body = body + "var idEl=document.getElementById('postId');";
+        body = body + "var data={title:titleEl.value.trim(),slug:slugEl.value.trim(),excerpt:document.getElementById('pExcerpt').value.trim(),content:document.getElementById('pContent').value,status:document.getElementById('pStatus').value};";
+        body = body + "var endpoint='/admin/blog/create';";
+        body = body + "if(idEl){data.id=idEl.value;endpoint='/admin/blog/update';}";
+        body = body + "try{";
+        body = body + "var r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});";
+        body = body + "var j=await r.json();";
+        body = body + "if(j.ok){window.location.href='/admin/blog';}";
+        body = body + "else{msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent=j.error||'Save failed.';btn.disabled=false;btn.textContent='Save Post';}";
+        body = body + "}catch(err){msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent='Network error.';btn.disabled=false;btn.textContent='Save Post';}";
+        body = body + "});";
+        body = body + "</script>";
+
+        return body;
+    }
+
+    method blogNew(path) {
+        let body = this.blogForm(false, "", "", "", "", "", "draft", "");
+        this.page("New Post", body);
+    }
+
+    method blogEdit(path) {
+        let id = this.queryParam(path, "id");
+        if (id == "") { this.redirect("/admin/blog"); return; }
+
+        let db = DB();
+        let found = false;
+        let title = ""; let slug = ""; let excerpt = ""; let content = ""; let status = ""; let pubAt = "";
+
+        if (db.open()) {
+            db.ensurePosts();
+            if (sqliteQuery("SELECT id, title, slug, excerpt, content, status, published_at FROM posts WHERE id=" + this.esc(id) + " LIMIT 1")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) > 0) {
+                    let row = arrayGet(rows, 0);
+                    found   = true;
+                    id      = arrayGet(row, 0);
+                    title   = arrayGet(row, 1);
+                    slug    = arrayGet(row, 2);
+                    excerpt = arrayGet(row, 3);
+                    content = arrayGet(row, 4);
+                    status  = arrayGet(row, 5);
+                    pubAt   = arrayGet(row, 6);
+                }
+            }
+            db.close();
+        }
+
+        if (!found) { this.redirect("/admin/blog"); return; }
+
+        let body = this.blogForm(true, id, title, slug, excerpt, content, status, pubAt);
+        this.page("Edit Post", body);
+    }
+
+    method blogCreate(path) {
+        if (!this.isLoggedIn()) { this.jsonErr(401, "Unauthorized"); return; }
+        if (getRequestMethod() != "POST") { this.jsonErr(405, "POST required"); return; }
+
+        let data    = jsonDecode(getRequestBody());
+        let title   = this.field(data, "title", "");
+        let slug    = this.field(data, "slug", "");
+        let excerpt = this.field(data, "excerpt", "");
+        let content = this.field(data, "content", "");
+        let status  = this.field(data, "status", "draft");
+
+        if (title == "") { this.jsonErr(400, "Title is required"); return; }
+        if (slug == "")  { this.jsonErr(400, "Slug is required"); return; }
+
+        let pubAt = "";
+        if (status == "published") { pubAt = "{{ now }}"; }
+
+        let db = DB();
+        if (!db.open()) { this.jsonErr(500, "Database unavailable"); return; }
+        db.ensurePosts();
+
+        let sql = "INSERT INTO posts (title, slug, excerpt, content, status, published_at) VALUES ('" +
+            this.esc(title) + "','" + this.esc(slug) + "','" + this.esc(excerpt) + "','" +
+            this.esc(content) + "','" + this.esc(status) + "',date('now'))";
+        if (status != "published") {
+            sql = "INSERT INTO posts (title, slug, excerpt, content, status, published_at) VALUES ('" +
+                this.esc(title) + "','" + this.esc(slug) + "','" + this.esc(excerpt) + "','" +
+                this.esc(content) + "','" + this.esc(status) + "','')";
+        }
+
+        let ok = sqliteExec(sql);
+        db.close();
+
+        if (!ok) { this.jsonErr(500, "Failed to save. Slug may already be taken."); return; }
+        this.jsonOk();
+    }
+
+    method blogUpdate(path) {
+        if (!this.isLoggedIn()) { this.jsonErr(401, "Unauthorized"); return; }
+        if (getRequestMethod() != "POST") { this.jsonErr(405, "POST required"); return; }
+
+        let data    = jsonDecode(getRequestBody());
+        let id      = this.field(data, "id", "");
+        let title   = this.field(data, "title", "");
+        let slug    = this.field(data, "slug", "");
+        let excerpt = this.field(data, "excerpt", "");
+        let content = this.field(data, "content", "");
+        let status  = this.field(data, "status", "draft");
+
+        if (id == "")    { this.jsonErr(400, "ID is required"); return; }
+        if (title == "") { this.jsonErr(400, "Title is required"); return; }
+        if (slug == "")  { this.jsonErr(400, "Slug is required"); return; }
+
+        let db = DB();
+        if (!db.open()) { this.jsonErr(500, "Database unavailable"); return; }
+        db.ensurePosts();
+
+        let pubAtSql = ", published_at=''";
+        if (status == "published") { pubAtSql = ", published_at=CASE WHEN published_at='' THEN date('now') ELSE published_at END"; }
+
+        let sql = "UPDATE posts SET title='" + this.esc(title) + "', slug='" + this.esc(slug) +
+            "', excerpt='" + this.esc(excerpt) + "', content='" + this.esc(content) +
+            "', status='" + this.esc(status) + "'" + pubAtSql + " WHERE id=" + this.esc(id);
+
+        let ok = sqliteExec(sql);
+        db.close();
+
+        if (!ok) { this.jsonErr(500, "Failed to update post."); return; }
+        this.jsonOk();
+    }
+
+    method blogDelete(path) {
+        if (getRequestMethod() != "POST") { this.redirect("/admin/blog"); return; }
+        let id = this.postParam(getRequestBody(), "id");
+        if (id == "") { this.redirect("/admin/blog"); return; }
+
+        let db = DB();
+        if (db.open()) {
+            db.ensurePosts();
+            sqliteExec("DELETE FROM posts WHERE id=" + this.esc(id));
+            db.close();
+        }
+        this.redirect("/admin/blog");
+    }
+
+    // ── Settings ──────────────────────────────────────────────────── //
+
     method settings(path) {
         let currentUser = this.getSetting("admin_username", adminCfg.username);
 
@@ -627,6 +886,18 @@ class AdminController {
             this.releaseUpdate(path);
         } else if (path == "/admin/releases/delete") {
             this.releaseDelete(path);
+        } else if (path == "/admin/blog") {
+            this.blogList(path);
+        } else if (path == "/admin/blog/new") {
+            this.blogNew(path);
+        } else if (path == "/admin/blog/edit") {
+            this.blogEdit(fullPath);
+        } else if (path == "/admin/blog/create") {
+            this.blogCreate(path);
+        } else if (path == "/admin/blog/update") {
+            this.blogUpdate(path);
+        } else if (path == "/admin/blog/delete") {
+            this.blogDelete(path);
         } else if (path == "/admin/settings") {
             this.settings(path);
         } else if (path == "/admin/settings/update") {

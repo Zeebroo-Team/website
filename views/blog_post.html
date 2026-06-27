@@ -1,0 +1,19 @@
+    <article class="blog-article">
+        <div class="blog-article__hero">
+            <div class="container">
+                <a href="/blog" class="blog-article__back"><i class="fa fa-arrow-left" aria-hidden="true"></i> All posts</a>
+                <div class="blog-article__meta">
+                    <span class="blog-article__date">{{ postDate }}</span>
+                </div>
+                <h1 class="blog-article__title">{{ postTitle }}</h1>
+                <p class="blog-article__excerpt">{{ postExcerpt }}</p>
+            </div>
+        </div>
+        <div class="blog-article__body">
+            <div class="container">
+                <div class="blog-prose">
+                    {!! postContent !!}
+                </div>
+            </div>
+        </div>
+    </article>

@@ -16,12 +16,16 @@ class View {
         layoutData.content = body;
         layoutData.navAbout = "";
         layoutData.navDownload = "";
+        layoutData.navBlog = "";
         layoutData.extraScripts = extraScripts;
         if (activeNav == "about") {
             layoutData.navAbout = "is-active";
         }
         if (activeNav == "download") {
             layoutData.navDownload = "is-active";
+        }
+        if (activeNav == "blog") {
+            layoutData.navBlog = "is-active";
         }
         this.output = renderView("views/layout.html", layoutData);
     }
@@ -68,6 +72,28 @@ class View {
             "Download the Zeebroo desktop POS app for Windows, macOS, and Linux, or use the web platform in any browser.",
             body,
             "download",
+            ""
+        );
+    }
+
+    method renderBlogList(data) {
+        let body = renderView("views/blog_list.html", data);
+        this.wrapPage(
+            "Blog - Zeebroo",
+            "Insights, product updates, and business tips from the Zeebroo team.",
+            body,
+            "blog",
+            ""
+        );
+    }
+
+    method renderBlogPost(data) {
+        let body = renderView("views/blog_post.html", data);
+        this.wrapPage(
+            data.postTitle + " - Zeebroo Blog",
+            data.postExcerpt,
+            body,
+            "blog",
             ""
         );
     }

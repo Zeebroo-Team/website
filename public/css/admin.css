@@ -292,6 +292,11 @@ body {
 
 .adm-badge--stable { background: var(--adm-stable-bg); color: var(--adm-stable); }
 .adm-badge--beta   { background: var(--adm-beta-bg);   color: var(--adm-beta);   }
+.adm-badge--draft  { background: #f3f4f6; color: #6b7280; }
+
+.adm-post-title { font-weight: 600; color: var(--adm-navy); }
+.adm-slug { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--adm-muted); background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+.adm-content-editor { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
 
 /* ── Platform dots ───────────────────────────────────────────────── */
 .adm-dots { display: flex; gap: 5px; flex-wrap: wrap; }
