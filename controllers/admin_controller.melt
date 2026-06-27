@@ -584,14 +584,14 @@ class AdminController {
     }
 
     method dispatch(path) {
-        let pathParts = splitString(path, "?");
-        let cleanPath = arrayGet(pathParts, 0);
+        // path has query string stripped by main.melt; use getRequestPath() when query params are needed
+        let fullPath = getRequestPath();
 
-        if (cleanPath == "/admin/login") {
+        if (path == "/admin/login") {
             this.login(path);
             return;
         }
-        if (cleanPath == "/admin/logout") {
+        if (path == "/admin/logout") {
             this.logout();
             return;
         }
@@ -600,21 +600,21 @@ class AdminController {
             return;
         }
 
-        if (cleanPath == "/admin" || cleanPath == "/admin/releases") {
+        if (path == "/admin" || path == "/admin/releases") {
             this.releases(path);
-        } else if (cleanPath == "/admin/releases/new") {
+        } else if (path == "/admin/releases/new") {
             this.releaseNew(path);
-        } else if (cleanPath == "/admin/releases/edit") {
-            this.releaseEdit(path);
-        } else if (cleanPath == "/admin/releases/create") {
+        } else if (path == "/admin/releases/edit") {
+            this.releaseEdit(fullPath);
+        } else if (path == "/admin/releases/create") {
             this.releaseCreate(path);
-        } else if (cleanPath == "/admin/releases/update") {
+        } else if (path == "/admin/releases/update") {
             this.releaseUpdate(path);
-        } else if (cleanPath == "/admin/releases/delete") {
+        } else if (path == "/admin/releases/delete") {
             this.releaseDelete(path);
-        } else if (cleanPath == "/admin/settings") {
+        } else if (path == "/admin/settings") {
             this.settings(path);
-        } else if (cleanPath == "/admin/settings/update") {
+        } else if (path == "/admin/settings/update") {
             this.settingsUpdate(path);
         } else {
             this.redirect("/admin/releases");
