@@ -5,4 +5,7 @@ class DB {
     method close() {
         sqliteClose();
     }
+    method ensureSettings() {
+        sqliteExec("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)");
+    }
 }

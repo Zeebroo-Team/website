@@ -120,6 +120,35 @@ class AdminController {
         return "CAST(SUBSTR(version,1,INSTR(version||'.','.') - 1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),1,INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')-1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')+1) AS INTEGER) DESC";
     }
 
+    // Read a setting from DB, falling back to the config default
+    method getSetting(key, fallback) {
+        let result = fallback;
+        let db = DB();
+        if (db.open()) {
+            db.ensureSettings();
+            if (sqliteQuery("SELECT value FROM settings WHERE key='" + this.esc(key) + "' LIMIT 1")) {
+                let rows = sqliteFetchAll();
+                if (arrayLength(rows) > 0) {
+                    let row = arrayGet(rows, 0);
+                    result = arrayGet(row, 0);
+                }
+            }
+            db.close();
+        }
+        return result;
+    }
+
+    method setSetting(key, value) {
+        let ok = false;
+        let db = DB();
+        if (db.open()) {
+            db.ensureSettings();
+            ok = sqliteExec("INSERT OR REPLACE INTO settings (key, value) VALUES ('" + this.esc(key) + "','" + this.esc(value) + "')");
+            db.close();
+        }
+        return ok;
+    }
+
     // Wraps content in the admin chrome
     method page(title, body) {
         let h = "<!DOCTYPE html><html lang=\"en\"><head>";
@@ -133,6 +162,7 @@ class AdminController {
         h = h + "<a class=\"adm-brand\" href=\"/admin\"><span class=\"adm-brand__z\">Z</span> Admin</a>";
         h = h + "<div class=\"adm-nav__links\">";
         h = h + "<a href=\"/admin/releases\">Releases</a>";
+        h = h + "<a href=\"/admin/settings\">Settings</a>";
         h = h + "<a href=\"/\" target=\"_blank\">View Site &rarr;</a>";
         h = h + "<a href=\"/admin/logout\" class=\"adm-nav__logout\">Logout</a>";
         h = h + "</div></nav>";
@@ -178,7 +208,9 @@ class AdminController {
             let b = getRequestBody();
             let u = this.postParam(b, "username");
             let p = this.postParam(b, "password");
-            if (u == adminCfg.username && p == adminCfg.password) {
+            let storedUser = this.getSetting("admin_username", adminCfg.username);
+            let storedPass = this.getSetting("admin_password", adminCfg.password);
+            if (u == storedUser && p == storedPass) {
                 setResponseHeader("Set-Cookie", adminCfg.cookieName + "=" + adminCfg.sessionToken + "; Path=/; HttpOnly; SameSite=Lax");
                 this.redirect("/admin");
             } else {
@@ -484,6 +516,73 @@ class AdminController {
         this.redirect("/admin/releases");
     }
 
+    method settings(path) {
+        let currentUser = this.getSetting("admin_username", adminCfg.username);
+
+        let body = "";
+        body = body + "<div class=\"adm-page-hdr\"><div><h1>Settings</h1><p class=\"adm-sub\">Update admin credentials</p></div></div>";
+        body = body + "<div class=\"adm-card adm-card--form\">";
+        body = body + "<form id=\"sForm\" class=\"adm-form\">";
+        body = body + "<div class=\"adm-field\"><label>Username</label>";
+        body = body + "<input type=\"text\" id=\"sUser\" value=\"" + this.he(currentUser) + "\" required autocomplete=\"username\"></div>";
+        body = body + "<div class=\"adm-section-label\">Change Password</div>";
+        body = body + "<div class=\"adm-field\"><label>Current Password <span class=\"adm-req\">*</span></label>";
+        body = body + "<input type=\"password\" id=\"sCurr\" required autocomplete=\"current-password\" placeholder=\"Enter current password to confirm\"></div>";
+        body = body + "<div class=\"adm-field\"><label>New Password <small>leave blank to keep current</small></label>";
+        body = body + "<input type=\"password\" id=\"sNew\" autocomplete=\"new-password\" placeholder=\"New password\"></div>";
+        body = body + "<div class=\"adm-field\"><label>Confirm New Password</label>";
+        body = body + "<input type=\"password\" id=\"sConf\" autocomplete=\"new-password\" placeholder=\"Repeat new password\"></div>";
+        body = body + "<div class=\"adm-form-footer\">";
+        body = body + "<div id=\"sMsg\" class=\"adm-alert\" style=\"display:none\"></div>";
+        body = body + "<button type=\"submit\" id=\"sBtn\" class=\"adm-btn adm-btn--primary\">Save Settings</button>";
+        body = body + "</div></form></div>";
+
+        body = body + "<script>";
+        body = body + "document.getElementById('sForm').addEventListener('submit',async function(e){";
+        body = body + "e.preventDefault();";
+        body = body + "var btn=document.getElementById('sBtn');";
+        body = body + "var msg=document.getElementById('sMsg');";
+        body = body + "var newPass=document.getElementById('sNew').value;";
+        body = body + "var confPass=document.getElementById('sConf').value;";
+        body = body + "if(newPass && newPass!==confPass){";
+        body = body + "msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent='New passwords do not match.';return;}";
+        body = body + "btn.disabled=true;btn.textContent='Saving...';";
+        body = body + "var data={username:document.getElementById('sUser').value.trim(),current_password:document.getElementById('sCurr').value,new_password:newPass};";
+        body = body + "try{";
+        body = body + "var r=await fetch('/admin/settings/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});";
+        body = body + "var j=await r.json();";
+        body = body + "if(j.ok){msg.style.display='block';msg.className='adm-alert adm-alert--success';msg.textContent='Settings saved.';btn.disabled=false;btn.textContent='Save Settings';document.getElementById('sCurr').value='';document.getElementById('sNew').value='';document.getElementById('sConf').value='';}";
+        body = body + "else{msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent=j.error||'Failed.';btn.disabled=false;btn.textContent='Save Settings';}";
+        body = body + "}catch(err){msg.style.display='block';msg.className='adm-alert adm-alert--error';msg.textContent='Network error.';btn.disabled=false;btn.textContent='Save Settings';}";
+        body = body + "});";
+        body = body + "</script>";
+
+        this.page("Settings", body);
+    }
+
+    method settingsUpdate(path) {
+        if (!this.isLoggedIn()) { this.jsonErr(401, "Unauthorized"); return; }
+        if (getRequestMethod() != "POST") { this.jsonErr(405, "POST required"); return; }
+
+        let data        = jsonDecode(getRequestBody());
+        let username    = this.field(data, "username", "");
+        let currPass    = this.field(data, "current_password", "");
+        let newPass     = this.field(data, "new_password", "");
+
+        if (username == "") { this.jsonErr(400, "Username is required"); return; }
+        if (currPass == "") { this.jsonErr(400, "Current password is required"); return; }
+
+        let storedPass = this.getSetting("admin_password", adminCfg.password);
+        if (currPass != storedPass) { this.jsonErr(403, "Current password is incorrect"); return; }
+
+        this.setSetting("admin_username", username);
+        if (newPass != "") {
+            this.setSetting("admin_password", newPass);
+        }
+
+        this.jsonOk();
+    }
+
     method dispatch(path) {
         let pathParts = splitString(path, "?");
         let cleanPath = arrayGet(pathParts, 0);
@@ -513,6 +612,10 @@ class AdminController {
             this.releaseUpdate(path);
         } else if (cleanPath == "/admin/releases/delete") {
             this.releaseDelete(path);
+        } else if (cleanPath == "/admin/settings") {
+            this.settings(path);
+        } else if (cleanPath == "/admin/settings/update") {
+            this.settingsUpdate(path);
         } else {
             this.redirect("/admin/releases");
         }
