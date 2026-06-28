@@ -58,6 +58,50 @@ class ApiController {
         return result;
     }
 
+    method latestRelease() {
+        if (getRequestMethod() != "GET") {
+            this.err(405, "Method not allowed. Use: GET /api/releases/latest");
+            return;
+        }
+
+        let db = DB();
+        if (!db.open()) {
+            this.err(500, "Database unavailable.");
+            return;
+        }
+
+        let semverDesc = "CAST(SUBSTR(version,1,INSTR(version||'.','.') - 1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),1,INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')-1) AS INTEGER) DESC, CAST(SUBSTR(SUBSTR(version,INSTR(version||'.','.') + 1),INSTR(SUBSTR(version,INSTR(version||'.','.') + 1)||'.','.')+1) AS INTEGER) DESC";
+
+        if (!sqliteQuery("SELECT version, release_date, channel, notes, windows_url, macos_url, linux_url FROM releases ORDER BY " + semverDesc + " LIMIT 1")) {
+            db.close();
+            this.err(500, "Query failed.");
+            return;
+        }
+
+        let rows = sqliteFetchAll();
+        db.close();
+
+        if (arrayLength(rows) == 0) {
+            this.err(404, "No releases found.");
+            return;
+        }
+
+        let row = arrayGet(rows, 0);
+        let notesPipe = arrayGet(row, 3);
+        let notesArr = splitString(notesPipe, "|");
+
+        let resp = objectCreate();
+        resp.ok           = true;
+        resp.version      = arrayGet(row, 0);
+        resp.release_date = arrayGet(row, 1);
+        resp.channel      = arrayGet(row, 2);
+        resp.notes        = notesArr;
+        resp.windows_url  = arrayGet(row, 4);
+        resp.macos_url    = arrayGet(row, 5);
+        resp.linux_url    = arrayGet(row, 6);
+        this.jsonResp(200, resp);
+    }
+
     method publishRelease() {
         if (getRequestMethod() != "POST") {
             this.err(405, "Method not allowed. Use: POST /api/releases");

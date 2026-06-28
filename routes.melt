@@ -20,6 +20,8 @@ class Router {
             AboutController().index();
         } else if (cleanPath == "/download") {
             DownloadController().index();
+        } else if (cleanPath == "/api/releases/latest") {
+            ApiController().latestRelease();
         } else if (cleanPath == "/api/releases") {
             ApiController().publishRelease();
         } else if (seg1 == "admin") {
