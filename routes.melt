@@ -4,6 +4,7 @@ import "controllers/industry_controller.melt";
 import "controllers/download_controller.melt";
 import "controllers/api_controller.melt";
 import "controllers/blog_controller.melt";
+import "controllers/tutorial_controller.melt";
 import "controllers/admin_controller.melt";
 import "controllers/not_found_controller.melt";
 
@@ -26,6 +27,8 @@ class Router {
             ApiController().publishRelease();
         } else if (seg1 == "admin") {
             AdminController().dispatch(path);
+        } else if (cleanPath == "/tutorial" || cleanPath == "/docs") {
+            TutorialController().index();
         } else if (cleanPath == "/blog") {
             BlogController().index();
         } else if (seg1 == "blog") {

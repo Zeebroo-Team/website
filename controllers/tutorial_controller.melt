@@ -1,0 +1,9 @@
+class TutorialController {
+    method index() {
+        let data = ViewData();
+        let body = renderView("views/tutorial.html", data);
+        setResponseContentType("text/html; charset=utf-8");
+        setResponseBody(body);
+        setResponseStatus(200);
+    }
+}
