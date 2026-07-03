@@ -300,6 +300,34 @@
         </div>
     </footer>
 
+    <!-- Cookie consent banner -->
+    <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;padding:18px 24px;background:#1a1a1a;color:#e5e5e5;box-shadow:0 -2px 16px rgba(0,0,0,.25);font-size:14px;line-height:1.6;">
+        <div style="max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <p style="margin:0;flex:1;min-width:220px;">
+                We use cookies to improve your experience on our site. By continuing to browse, you agree to our
+                <a href="/tutorial" style="color:#f5c518;text-decoration:underline;">use of cookies</a>.
+            </p>
+            <div style="display:flex;gap:10px;flex-shrink:0;">
+                <button onclick="acceptCookies()" style="background:#f5c518;color:#111;border:none;padding:9px 22px;border-radius:5px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">Accept</button>
+                <button onclick="dismissCookies()" style="background:transparent;color:#aaa;border:1px solid #444;padding:9px 16px;border-radius:5px;font-size:13px;cursor:pointer;white-space:nowrap;">Dismiss</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function(){
+        if(!localStorage.getItem('zbr_cookie_ok')){
+            document.getElementById('cookie-banner').style.display='block';
+        }
+    })();
+    function acceptCookies(){
+        localStorage.setItem('zbr_cookie_ok','1');
+        document.getElementById('cookie-banner').style.display='none';
+    }
+    function dismissCookies(){
+        document.getElementById('cookie-banner').style.display='none';
+    }
+    </script>
+
     {!! extraScripts !!}
     <script src="/js/main.js" defer></script>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
