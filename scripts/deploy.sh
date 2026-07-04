@@ -19,6 +19,11 @@ fi
 echo "==> Trusting repository directory for git..."
 git config --global --add safe.directory "${REPO_DIR}"
 
+# Fix .git/objects ownership if a previous run wrote files as root.
+echo "==> Fixing .git permissions..."
+sudo chown -R "$(whoami)" "${REPO_DIR}/.git" 2>/dev/null || true
+sudo chmod -R u+rw "${REPO_DIR}/.git/objects" 2>/dev/null || true
+
 # Normalize remote URL: replace SSH config aliases with the real github.com hostname.
 # This fixes deployments where the repo was originally cloned using a local SSH
 # config alias (e.g. git@github-website:...) that does not exist on the server.

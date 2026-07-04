@@ -35,6 +35,8 @@ jobs:
             if [ -z "${DEPLOY_PATH}" ]; then export DEPLOY_PATH="/var/www/melting-app"; fi
             if [ -z "${SERVICE_NAME}" ]; then export SERVICE_NAME="melting-app"; fi
             cd "${DEPLOY_PATH}"
+            sudo chown -R "$(whoami)" "${DEPLOY_PATH}/.git" 2>/dev/null || true
+            sudo chmod -R u+rw "${DEPLOY_PATH}/.git/objects" 2>/dev/null || true
             CURRENT_REMOTE="$(git remote get-url origin 2>/dev/null || true)"
             if [[ -n "${CURRENT_REMOTE}" && "${CURRENT_REMOTE}" != *"github.com"* ]]; then
               REPO_PATH="$(echo "${CURRENT_REMOTE}" | sed 's/.*:\(.*\)/\1/')"
