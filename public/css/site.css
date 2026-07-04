@@ -1611,6 +1611,14 @@ a { color: inherit; }
     align-items: center;
 }
 
+.ind-hero__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 48px rgba(0,0,0,.14), 0 4px 12px rgba(0,0,0,.08);
+}
+
 .ind-hero__label {
     display: flex;
     align-items: center;

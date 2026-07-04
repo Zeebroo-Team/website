@@ -12,6 +12,13 @@ class IndustryController {
         ind.indHeroTitle = this.getHeroTitle();
         ind.indHeroDesc = this.getHeroDesc();
         ind.indMeta = this.getMeta();
+        let heroImg = this.getHeroImage();
+        ind.indHeroImageHtml = "";
+        ind.indStatsStyle = "";
+        if (heroImg != "") {
+            ind.indHeroImageHtml = "<img src=\"" + heroImg + "\" alt=\"" + ind.indName + " POS\" class=\"ind-hero__img\" loading=\"eager\">";
+            ind.indStatsStyle = "display:none";
+        }
 
         if (ind.indName == "") {
             NotFoundController().show(path);
@@ -81,6 +88,11 @@ class IndustryController {
         if (this.slug == "pharmacy-healthcare") return "From prescription stock control to patient billing and supplier reconciliation, Zeebroo keeps your pharmacy running without gaps.";
         if (this.slug == "hotel-hospitality") return "From front desk to housekeeping and food and beverage, Zeebroo keeps every department in sync so nothing falls through the cracks.";
         return "Zeebroo adapts to how your business actually works.";
+    }
+
+    method getHeroImage() {
+        if (this.slug == "restaurant") return "/images/resturant_pos.png";
+        return "";
     }
 
     method getMeta() {
